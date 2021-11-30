@@ -100,6 +100,27 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPost]
+        [Route("api/editpinned")]
+        public IActionResult EditPinned([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.EditPinned(note);
+                if (message.Equals("Note Pinned"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPost]
         [Route("api/editcolor")]
         public IActionResult EditColor([FromBody] NoteModel note)
         {

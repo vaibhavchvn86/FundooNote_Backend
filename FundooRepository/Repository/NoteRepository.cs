@@ -107,5 +107,24 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public string EditPinned(NoteModel note)
+        {
+            try
+            {
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Pinned = note.Pinned;
+                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Pinned, note.Pinned));
+                    return "Note Pinned";
+                }
+                return "Note UnPinned";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
