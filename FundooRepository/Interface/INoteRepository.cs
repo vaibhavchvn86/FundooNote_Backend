@@ -10,7 +10,7 @@ namespace FundooRepository.Interface
         string AddNote(NoteModel note);
         string EditNote(NoteModel note);
         string EditDescription(NoteModel note);
-        //string EditRemainder(NoteModel note);
+        string EditReminder(NoteModel note);
         //string EditPinned(NoteModel note);
         //string EditArchive(NoteModel note);
         //string EditColor(NoteModel note);
