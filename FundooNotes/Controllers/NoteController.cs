@@ -37,12 +37,12 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPost]
-        [Route("api/editnote")]
-        public IActionResult EditNote([FromBody] NoteModel note)
+        [Route("api/edittitle")]
+        public IActionResult EditTitle([FromBody] NoteModel note)
         {
             try
             {
-                string message = this.manager.EditNote(note);
+                string message = this.manager.EditTitle(note);
                 if (message.Equals("Title Updated Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -149,6 +149,27 @@ namespace FundooNotes.Controllers
             {
                 string message = this.manager.EditColor(note);
                 if (message.Equals("Color Changed Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPost]
+        [Route("api/trash")]
+        public IActionResult Trash([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.Trash(note);
+                if (message.Equals("Note Trashed"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }

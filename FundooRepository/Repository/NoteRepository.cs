@@ -31,7 +31,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditNote(NoteModel note)
+        public string EditTitle(NoteModel note)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace FundooRepository.Repository
                 var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
                 if (noteExist != null)
                 {
-                    noteExist.Description = note.Description;
+                    noteExist.Reminder = note.Reminder;
                     _User.UpdateOne(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Reminder, note.Reminder));
                     return "Reminder Edited Successfully";
@@ -134,12 +134,31 @@ namespace FundooRepository.Repository
                 var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
                 if (noteExist != null)
                 {
-                    noteExist.Description = note.Description;
+                    noteExist.Color = note.Color;
                     _User.UpdateOne(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
                     return "Color Changed Successfully";
                 }
                 return "Color not Changed";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Trash(NoteModel note)
+        {
+            try
+            {
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Trash = note.Trash;
+                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Trash, note.Trash));
+                    return "Note Trashed";
+                }
+                return "Note not Trashed";
             }
             catch (ArgumentNullException ex)
             {

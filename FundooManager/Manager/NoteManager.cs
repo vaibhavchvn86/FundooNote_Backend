@@ -26,11 +26,11 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public string EditNote(NoteModel note)
+        public string EditTitle(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditNote(note);
+                return this.NoteRepository.EditTitle(note);
             }
             catch (Exception ex)
             {
@@ -86,6 +86,17 @@ namespace FundooManager.Manager
             try
             {
                 return this.NoteRepository.EditColor(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string Trash(NoteModel note)
+        {
+            try
+            {
+                return this.NoteRepository.Trash(note);
             }
             catch (Exception ex)
             {
