@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "IPGyw6vTR5a3hWSfflKHB/m4yn7rc7tOgycT7NccbVtdMUVBZKhpiGweplKN9sIm1OObiAReoeYLNU0lcO7tfA==",
+  "success": true,
+  "projectFilePath": "D:\\Visual Studio 2019\\repos\\FundooNotes\\FundooModels\\FundooModels.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vaibh\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\vaibh\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\vaibh\\.nuget\\packages\\mongodb.bson\\2.13.2\\mongodb.bson.2.13.2.nupkg.sha512",
+    "C:\\Users\\vaibh\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
