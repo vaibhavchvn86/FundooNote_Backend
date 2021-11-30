@@ -59,5 +59,16 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string EditColor(NoteModel note)
+        {
+            try
+            {
+                return this.NoteRepository.EditColor(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

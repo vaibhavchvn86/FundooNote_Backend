@@ -13,6 +13,6 @@ namespace FundooRepository.Interface
         string EditReminder(NoteModel note);
         //string EditPinned(NoteModel note);
         //string EditArchive(NoteModel note);
-        //string EditColor(NoteModel note);
+        string EditColor(NoteModel note);
     }
 }
