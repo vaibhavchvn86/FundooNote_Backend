@@ -88,25 +88,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditColor(NoteModel note)
-        {
-            try
-            {
-                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
-                if (noteExist != null)
-                {
-                    noteExist.Description = note.Description;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
-                    return "Color Changed Successfully";
-                }
-                return "Color not Changed";
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+       
         public string EditPinned(NoteModel note)
         {
             try
@@ -120,6 +102,44 @@ namespace FundooRepository.Repository
                     return "Note Pinned";
                 }
                 return "Note UnPinned";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string EditArchive(NoteModel note)
+        {
+            try
+            {
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Archive = note.Archive;
+                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Archive, note.Archive));
+                    return "Note Archived";
+                }
+                return "Note UnArchived";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string EditColor(NoteModel note)
+        {
+            try
+            {
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Description = note.Description;
+                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
+                    return "Color Changed Successfully";
+                }
+                return "Color not Changed";
             }
             catch (ArgumentNullException ex)
             {
