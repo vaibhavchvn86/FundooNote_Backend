@@ -50,5 +50,24 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+        public string EditDescription(NoteModel note)
+        {
+            try
+            {
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    noteExist.Description = note.Description;
+                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
+                    return "Description Updated Successfully";
+                }
+                return "Description not edited";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

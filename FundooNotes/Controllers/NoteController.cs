@@ -57,5 +57,26 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+        [HttpPost]
+        [Route("api/editdescription")]
+        public IActionResult EditDescription([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.EditDescription(note);
+                if (message.Equals("Description Updated Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
     }
 }
