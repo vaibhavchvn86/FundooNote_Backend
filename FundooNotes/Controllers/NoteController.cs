@@ -42,7 +42,7 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = this.manager.AddNote(note);
+                string message = this.manager.EditNote(note);
                 if (message.Equals("Title Updated Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });

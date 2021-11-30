@@ -39,7 +39,7 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     noteExist.Title = note.Title;
-                    _User.UpdateOne(x => x.Title == note.Title,
+                    _User.UpdateOne(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Title, note.Title));
                     return "Title Updated Successfully";
                 }
