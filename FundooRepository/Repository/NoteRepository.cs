@@ -26,7 +26,7 @@ namespace FundooRepository.Repository
                     _User.InsertOne(note);
                     return "Note Added Successfully";
             }
-            catch (ArgumentNullException ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -159,6 +159,27 @@ namespace FundooRepository.Repository
                     return "Note Trashed";
                 }
                 return "Note not Trashed";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public string DeleteForever(NoteModel note)
+        {
+            try
+            {
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                if (noteExist != null)
+                {
+                    if (noteExist.Trash.Equals(true))
+                    {
+                        _User.DeleteOne(x => x.NoteID == note.NoteID);
+                        return "Note Deleted";
+                    }
+                    return "note not deleted";
+                }
+                return "Note not Found";
             }
             catch (ArgumentNullException ex)
             {

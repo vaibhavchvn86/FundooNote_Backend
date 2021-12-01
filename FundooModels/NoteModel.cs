@@ -15,10 +15,10 @@ namespace FundooModels
         [BsonRepresentation(BsonType.ObjectId)]
         public string NoteID { get; set; }
 
-        //[ForeignKey("_UserID")]
-        //public virtual RegisterModel RegisterModel { get; set; }
-        //public string _UserID { get; set; }
-        
+        [ForeignKey("RegisterModel")]
+        public virtual RegisterModel RegisterModel { get; set; }
+        public string _UserID { get; set; }
+
         public string Title { get; set; }
 
         //[Required]
@@ -28,6 +28,7 @@ namespace FundooModels
         public bool Pinned { get; set; }
         [DefaultValue(false)]
         public bool Archive { get; set; }
+        [DefaultValue(false)]
         public string Trash { get; set; }
         public string DeleteForever { get; set; }
         public string Restore { get; set; }

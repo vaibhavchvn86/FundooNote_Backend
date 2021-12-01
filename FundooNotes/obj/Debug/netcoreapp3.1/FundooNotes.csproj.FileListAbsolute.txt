@@ -149,3 +149,7 @@ D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Swas
 D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Experimental.System.Messaging.dll
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

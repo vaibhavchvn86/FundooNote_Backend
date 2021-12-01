@@ -1,5 +1,6 @@
 ﻿using FundooManager.Interface;
 using FundooModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
 {
+    [Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteManager manager;
@@ -36,7 +38,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/edittitle")]
         public IActionResult EditTitle([FromBody] NoteModel note)
         {
@@ -57,7 +59,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/editdescription")]
         public IActionResult EditDescription([FromBody] NoteModel note)
         {
@@ -78,7 +80,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/editreminder")]
         public IActionResult EditReminder([FromBody] NoteModel note)
         {
@@ -99,7 +101,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/editpinned")]
         public IActionResult EditPinned([FromBody] NoteModel note)
         {
@@ -120,7 +122,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/editarchive")]
         public IActionResult EditArchive([FromBody] NoteModel note)
         {
@@ -141,7 +143,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/editcolor")]
         public IActionResult EditColor([FromBody] NoteModel note)
         {
@@ -162,7 +164,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
-        [HttpPost]
+        [HttpPut]
         [Route("api/trash")]
         public IActionResult Trash([FromBody] NoteModel note)
         {
@@ -170,6 +172,27 @@ namespace FundooNotes.Controllers
             {
                 string message = this.manager.Trash(note);
                 if (message.Equals("Note Trashed"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpDelete]
+        [Route("api/deleted")]
+        public IActionResult DeleteForever([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = this.manager.DeleteForever(note);
+                if (message.Equals("Note Deleted"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }

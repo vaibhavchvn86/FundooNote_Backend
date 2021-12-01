@@ -103,5 +103,16 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public string DeleteForever(NoteModel note)
+        {
+            try
+            {
+                return this.NoteRepository.DeleteForever(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
