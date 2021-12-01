@@ -16,6 +16,7 @@ namespace FundooManager.Interface
         Task<string> EditArchive(NoteModel note);
         Task<string> EditColor(NoteModel note);
         Task<string> Trash(NoteModel note);
+        //Task<string> Restore(NoteModel note);
         Task<string> DeleteForever(NoteModel note);
     }
 }

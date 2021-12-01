@@ -35,7 +35,7 @@ namespace FundooRepository.Repository
                 var ifExist = await _User.AsQueryable<RegisterModel>().SingleOrDefaultAsync(e => e.Email == user.Email);
                 if (ifExist == null)
                 {
-                     _User.InsertOne(user);
+                    await _User.InsertOneAsync(user);
                     return "Register Successful";
                 }
                 return "Email Already Exist";

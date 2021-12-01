@@ -29,9 +29,8 @@ namespace FundooModels
         [DefaultValue(false)]
         public bool Archive { get; set; }
         [DefaultValue(false)]
-        public string Trash { get; set; }
+        public bool Trash { get; set; }
         public string DeleteForever { get; set; }
-        public string Restore { get; set; }
         public string Image { get; set; }
         public string Color { get; set; }
 

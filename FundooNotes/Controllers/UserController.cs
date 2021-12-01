@@ -91,12 +91,12 @@ namespace FundooNotes.Controllers
         }
         [HttpPost]
         [Route("api/reset")]
-        public IActionResult Reset([FromBody] ResetModel newpassword)
+        public async Task<IActionResult> Reset([FromBody] ResetModel newpassword)
 
         {
             try
             {
-                string message = this.manager.ResetPassword(newpassword);
+                string message = await this.manager.ResetPassword(newpassword);
                 if (message.Equals("Reset Password Successful"))
                 {
                     return this.Ok(new { Status = true, Message = message });
