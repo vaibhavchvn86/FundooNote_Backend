@@ -4,6 +4,7 @@ using FundooRepository.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooManager.Manager
 {
@@ -15,99 +16,99 @@ namespace FundooManager.Manager
             this.NoteRepository = NoteRepository;
         }
 
-        public string AddNote(NoteModel note)
+        public async Task<string> AddNote(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.AddNote(note);
+                return await this.NoteRepository.AddNote(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string EditTitle(NoteModel note)
+        public async Task<string> EditTitle(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditTitle(note);
+                return await this.NoteRepository.EditTitle(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string EditDescription(NoteModel note)
+        public async Task<string> EditDescription(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditDescription(note);
+                return await this.NoteRepository.EditDescription(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string EditReminder(NoteModel note)
+        public async Task<string> EditReminder(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditReminder(note);
+                return await this.NoteRepository.EditReminder(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string EditPinned(NoteModel note)
+        public async Task<string> EditPinned(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditPinned(note);
+                return await this.NoteRepository.EditPinned(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string EditArchive(NoteModel note)
+        public async Task<string> EditArchive(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditArchive(note);
+                return await this.NoteRepository.EditArchive(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string EditColor(NoteModel note)
+        public async Task<string> EditColor(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.EditColor(note);
+                return await this.NoteRepository.EditColor(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string Trash(NoteModel note)
+        public async Task<string> Trash(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.Trash(note);
+                return await this.NoteRepository.Trash(note);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public string DeleteForever(NoteModel note)
+        public async Task<string> DeleteForever(NoteModel note)
         {
             try
             {
-                return this.NoteRepository.DeleteForever(note);
+                return await this.NoteRepository.DeleteForever(note);
             }
             catch (Exception ex)
             {

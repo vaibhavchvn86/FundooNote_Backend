@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooRepository.Interface
 {
     public interface INoteRepository
     {
-        string AddNote(NoteModel note);
-        string EditTitle(NoteModel note);
-        string EditDescription(NoteModel note);
-        string EditReminder(NoteModel note);
-        string EditPinned(NoteModel note);
-        string EditArchive(NoteModel note);
-        string EditColor(NoteModel note);
-        string Trash(NoteModel note);
-        string DeleteForever(NoteModel note);
+        Task<string> AddNote(NoteModel note);
+        Task<string> EditTitle(NoteModel note);
+        Task<string> EditDescription(NoteModel note);
+        Task<string> EditReminder(NoteModel note);
+        Task<string> EditPinned(NoteModel note);
+        Task<string> EditArchive(NoteModel note);
+        Task<string> EditColor(NoteModel note);
+        Task<string> Trash(NoteModel note);
+        Task<string> DeleteForever(NoteModel note);
     }
 }

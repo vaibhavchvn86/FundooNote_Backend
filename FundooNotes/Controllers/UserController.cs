@@ -46,11 +46,11 @@ namespace FundooNotes.Controllers
 
         [HttpPost]
         [Route("api/login")]
-        public IActionResult Login([FromBody] LoginModel logindetails)
+        public async Task<IActionResult> Login([FromBody] LoginModel logindetails)
         {
             try
             {
-                string message = this.manager.Login(logindetails);
+                string message = await this.manager.Login(logindetails);
                 if (message.Equals("Login Successful"))
                 {
                     string token = this.manager.GenerateToken(logindetails.Email);
@@ -68,12 +68,12 @@ namespace FundooNotes.Controllers
         }
         [HttpPost]
         [Route("api/forget")]
-        public IActionResult Forget([FromBody] ForgetModel email)
+        public async Task<IActionResult> Forget([FromBody] ForgetModel email)
 
         {
             try
             {
-                string message = this.manager.ForgetPassword(email);
+                string message = await this.manager.ForgetPassword(email);
                 if (message.Equals("Reset Link send to Your Email"))
                 {
                     return this.Ok(new { Status = true, Message = message });

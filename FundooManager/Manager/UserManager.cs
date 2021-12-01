@@ -37,12 +37,12 @@ namespace FundooManager.Manager
             }
         }
 
-        public string Login(LoginModel logindetails)
+        public async Task<string> Login(LoginModel logindetails)
         {
             logindetails.Password = EncodePasswordToBase64(logindetails.Password);
             try
             {
-                return this.repository.Login(logindetails);
+                return await this.repository.Login(logindetails);
             }
             catch(Exception ex)
             {
@@ -50,11 +50,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public string ForgetPassword(ForgetModel Email)
+        public async Task<string> ForgetPassword(ForgetModel Email)
         {
             try
             {
-                return this.repository.ForgetPassword(Email);
+                return await this.repository.ForgetPassword(Email);
             }
             catch (Exception ex)
             {
@@ -62,12 +62,12 @@ namespace FundooManager.Manager
             }
         }
 
-        public string ResetPassword(ResetModel newpassword)
+        public async Task<string> ResetPassword(ResetModel newpassword)
         {
             newpassword.Password = EncodePasswordToBase64(newpassword.Password);
             try
             {
-                return this.repository.ResetPassword(newpassword);
+                return await this.repository.ResetPassword(newpassword);
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FundooRepository.Repository
 {
@@ -19,11 +20,11 @@ namespace FundooRepository.Repository
 
             _User = database.GetCollection<NoteModel>("User");
         }
-        public string AddNote(NoteModel note)
+        public async Task<string> AddNote(NoteModel note)
         {
             try
             {
-                    _User.InsertOne(note);
+                    await _User.InsertOneAsync(note);
                     return "Note Added Successfully";
             }
             catch (Exception ex)
@@ -31,7 +32,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditTitle(NoteModel note)
+        public async Task<string> EditTitle(NoteModel note)
         {
             try
             {
@@ -39,7 +40,7 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     noteExist.Title = note.Title;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Title, note.Title));
                     return "Title Updated Successfully";
                 }
@@ -50,7 +51,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditDescription(NoteModel note)
+        public async Task<string> EditDescription(NoteModel note)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditReminder(NoteModel note)
+        public async Task<string> EditReminder(NoteModel note)
         {
             try
             {
@@ -77,7 +78,7 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     noteExist.Reminder = note.Reminder;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Reminder, note.Reminder));
                     return "Reminder Edited Successfully";
                 }
@@ -89,15 +90,15 @@ namespace FundooRepository.Repository
             }
         }
        
-        public string EditPinned(NoteModel note)
+        public async Task<string> EditPinned(NoteModel note)
         {
             try
             {
-                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefault();
+                var noteExist = _User.AsQueryable().Where(x => x.NoteID == note.NoteID).SingleOrDefault();
                 if (noteExist != null)
                 {
                     noteExist.Pinned = note.Pinned;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Pinned, note.Pinned));
                     return "Note Pinned";
                 }
@@ -108,7 +109,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditArchive(NoteModel note)
+        public async Task<string> EditArchive(NoteModel note)
         {
             try
             {
@@ -116,7 +117,7 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     noteExist.Archive = note.Archive;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Archive, note.Archive));
                     return "Note Archived";
                 }
@@ -127,7 +128,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string EditColor(NoteModel note)
+        public async Task<string> EditColor(NoteModel note)
         {
             try
             {
@@ -135,7 +136,7 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     noteExist.Color = note.Color;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
                     return "Color Changed Successfully";
                 }
@@ -146,7 +147,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string Trash(NoteModel note)
+        public async Task<string> Trash(NoteModel note)
         {
             try
             {
@@ -154,7 +155,7 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     noteExist.Trash = note.Trash;
-                    _User.UpdateOne(x => x.NoteID == note.NoteID,
+                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Trash, note.Trash));
                     return "Note Trashed";
                 }
@@ -165,7 +166,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string DeleteForever(NoteModel note)
+        public async Task<string> DeleteForever(NoteModel note)
         {
             try
             {
@@ -174,7 +175,7 @@ namespace FundooRepository.Repository
                 {
                     if (noteExist.Trash.Equals(true))
                     {
-                        _User.DeleteOne(x => x.NoteID == note.NoteID);
+                        await _User.DeleteOneAsync(x => x.NoteID == note.NoteID);
                         return "Note Deleted";
                     }
                     return "note not deleted";

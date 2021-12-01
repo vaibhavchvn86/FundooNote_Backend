@@ -45,14 +45,14 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string Login(LoginModel logindetails)
+        public async Task<string> Login(LoginModel logindetails)
         {
             try
             {
-                var EmailExist = _User.AsQueryable<RegisterModel>().Where(x => (x.Email == logindetails.Email)).FirstOrDefault();
+                var EmailExist = await _User.AsQueryable<RegisterModel>().Where(x => (x.Email == logindetails.Email)).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
-                    var PasswordExist = _User.AsQueryable<RegisterModel>().Where(x => x.Password == logindetails.Password).FirstOrDefault();
+                    var PasswordExist = await _User.AsQueryable<RegisterModel>().Where(x => x.Password == logindetails.Password).FirstOrDefaultAsync();
                     if (PasswordExist != null)
                     {
                         return "Login Successful";
@@ -66,12 +66,12 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public string ForgetPassword(ForgetModel MYEmail)
+        public async Task<string> ForgetPassword(ForgetModel MYEmail)
         {
             
             try
             {
-                var EmailExist = _User.AsQueryable<RegisterModel>().Where(x => x.Email == MYEmail.Email).SingleOrDefault();
+                var EmailExist = await _User.AsQueryable<RegisterModel>().Where(x => x.Email == MYEmail.Email).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
                     MailMessage mail = new MailMessage();
@@ -122,11 +122,11 @@ namespace FundooRepository.Repository
             return receivemessage.Body.ToString();
         }
 
-        public string ResetPassword(ResetModel newpassword)
+        public async Task<string> ResetPassword(ResetModel newpassword)
         {
             try
             {
-                var EmailExist = _User.AsQueryable().Where(x => x.Email == newpassword.Email).FirstOrDefault();
+                var EmailExist = await _User.AsQueryable().Where(x => x.Email == newpassword.Email).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
                         EmailExist.Password = newpassword.Password;
