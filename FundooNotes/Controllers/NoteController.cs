@@ -173,6 +173,27 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPut]
+        [Route("api/editimage")]
+        public async Task<IActionResult> EditImage([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = await this.manager.EditImage(note);
+                if (message.Equals("Image Updated Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPut]
         [Route("api/trash")]
         public async Task<IActionResult> Trash([FromBody] NoteModel note)
         {

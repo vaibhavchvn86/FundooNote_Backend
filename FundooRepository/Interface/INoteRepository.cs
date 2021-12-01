@@ -15,6 +15,7 @@ namespace FundooRepository.Interface
         Task<string> EditPinned(NoteModel note);
         Task<string> EditArchive(NoteModel note);
         Task<string> EditColor(NoteModel note);
+        Task<string> EditImage(NoteModel note);
         Task<string> Trash(NoteModel note);
         Task<string> DeleteForever(NoteModel note);
     }

@@ -93,6 +93,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+        public async Task<string> EditImage(NoteModel note)
+        {
+            try
+            {
+                return await this.NoteRepository.EditImage(note);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public async Task<string> Trash(NoteModel note)
         {
             try

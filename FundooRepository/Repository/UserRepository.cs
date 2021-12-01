@@ -130,7 +130,7 @@ namespace FundooRepository.Repository
                 if (EmailExist != null)
                 {
                         EmailExist.Password = newpassword.Password;
-                        _User.UpdateOne(x => x.Email == newpassword.Email,
+                        await _User.UpdateOneAsync(x => x.Email == newpassword.Email,
                             Builders<RegisterModel>.Update.Set(x => x.Password, newpassword.Password));
                         return "Reset Password Successful";
                 }
