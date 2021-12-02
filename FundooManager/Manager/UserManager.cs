@@ -16,12 +16,10 @@ namespace FundooManager.Manager
     public class UserManager : IUserManager
     {
         private readonly IUserRepository repository;
-        private  IConfiguration configuration;
 
-        public UserManager(IUserRepository repository, IConfiguration configuration)
+        public UserManager(IUserRepository repository)
         {
             this.repository = repository;
-            this.configuration = configuration;
         }
 
         public async Task<string> Register(RegisterModel user)

@@ -1,5 +1,9 @@
-﻿using FundooModels;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using FundooModels;
 using FundooRepository.Interface;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
@@ -12,9 +16,10 @@ namespace FundooRepository.Repository
     public class NoteRepository : INoteRepository
     {
         private readonly IMongoCollection<NoteModel> _User;
-
-        public NoteRepository(IFundooDatabaseSettings settings)
+        private IConfiguration configuration;
+        public NoteRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
         {
+            this.configuration = configuration;
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
@@ -32,7 +37,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> EditTitle(NoteModel note)
+        public async Task<string> EditNote(NoteModel note)
         {
             try
             {
@@ -42,35 +47,20 @@ namespace FundooRepository.Repository
                     noteExist.Title = note.Title;
                     await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Title, note.Title));
-                    return "Title Updated Successfully";
+
+                     noteExist.Description = note.Description;
+                     await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                         Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
+                     return "Note Updated Successfully";
                 }
-                return "Title does not exist";
+                return "Note does not exist";
             }
             catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> EditDescription(NoteModel note)
-        {
-            try
-            {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
-                if (noteExist != null)
-                {
-                    noteExist.Description = note.Description;
-                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
-                    return "Description Updated Successfully";
-                }
-                return "Description not edited";
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public async Task<string> EditReminder(NoteModel note)
+        public async Task<string> AddReminder(NoteModel note)
         {
             try
             {
@@ -80,7 +70,25 @@ namespace FundooRepository.Repository
                     noteExist.Reminder = note.Reminder;
                     await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Reminder, note.Reminder));
-                    return "Reminder Edited Successfully";
+                    return "Reminder Added Successfully";
+                }
+                return "Reminder not Added";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> RemoveReminder(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    noteExist.Reminder = note.Reminder;
+                    await _User.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                    return "Reminder Deleted Successfully";
                 }
                 return "Reminder not edited";
             }
@@ -89,8 +97,8 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-       
-        public async Task<string> EditPinned(NoteModel note)
+
+        public async Task<string> PinnedUnPinned(NoteModel note)
         {
             try
             {
@@ -120,7 +128,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> EditArchive(NoteModel note)
+        public async Task<string> ArchiveUnArchive(NoteModel note)
         {
             try
             {
@@ -169,19 +177,34 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> EditImage(NoteModel note)
+        public async Task<string> ImageUpload(IFormFile image, string noteID)
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    noteExist.Image = note.Image;
-                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Image, note.Image));
-                    return "Image Updated Successfully";
+                    
+                    noteExist.Image = noteID.Image;
+                    await _User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Image, noteID.Image));
+
+                    var Filename = image.FileName;
+                    var Stream = image.OpenReadStream();
+                    var cloudinary = new Cloudinary(this.configuration["CloudinaryAccount"]);
+
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(image.Filename, image.Stream),
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+
+                    var uplPath = uploadResult.Uri;
+
+                    return "Image Uploaded Successfully";
                 }
-                return "Image not edited";
+                return "Image not Uploaded";
             }
             catch (ArgumentNullException ex)
             {
@@ -211,6 +234,28 @@ namespace FundooRepository.Repository
                     }
                 }
                 return "Note not Trashed";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> Restore(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    if (noteExist.Trash.Equals(true))
+                    {
+                        noteExist.Trash = note.Trash;
+                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Trash, note.Trash));
+                        return "Note Restored";
+                    }
+                }
+                return "Note not Found";
             }
             catch (ArgumentNullException ex)
             {

@@ -1,6 +1,9 @@
-﻿using FundooManager.Interface;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using FundooManager.Interface;
 using FundooModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -39,13 +42,56 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPut]
-        [Route("api/edittitle")]
-        public async Task<IActionResult> EditTitle([FromBody] NoteModel note)
+        [Route("api/editnote")]
+        public async Task<IActionResult> EditNote([FromBody] NoteModel note)
         {
             try
             {
-                string message = await this.manager.EditTitle(note);
-                if (message.Equals("Title Updated Successfully"))
+                string message = await this.manager.EditNote(note);
+                if (message.Equals("Note Updated Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        
+        [HttpPut]
+        [Route("api/addreminder")]
+        public async Task<IActionResult> AddReminder([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = await this.manager.AddReminder(note);
+                if (message.Equals("Reminder Added Successfully"))
+                {
+                    return this.Ok(new { Status = true, Message = message });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpDelete]
+        [Route("api/removereminder")]
+        public async Task<IActionResult> RemoveReminder([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = await this.manager.RemoveReminder(note);
+                if (message.Equals("Reminder Deleted Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -60,54 +106,12 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPut]
-        [Route("api/editdescription")]
-        public async Task<IActionResult> EditDescription([FromBody] NoteModel note)
+        [Route("api/pinnedunpinned")]
+        public async Task<IActionResult> PinnedUnPinned([FromBody] NoteModel note)
         {
             try
             {
-                string message = await this.manager.EditDescription(note);
-                if (message.Equals("Description Updated Successfully"))
-                {
-                    return this.Ok(new { Status = true, Message = message });
-                }
-                else
-                {
-                    return this.BadRequest(new { Status = false, Message = message });
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(new { Status = false, Message = ex.Message });
-            }
-        }
-        [HttpPut]
-        [Route("api/editreminder")]
-        public async Task<IActionResult> EditReminder([FromBody] NoteModel note)
-        {
-            try
-            {
-                string message = await this.manager.EditReminder(note);
-                if (message.Equals("Reminder Edited Successfully"))
-                {
-                    return this.Ok(new { Status = true, Message = message });
-                }
-                else
-                {
-                    return this.BadRequest(new { Status = false, Message = message });
-                }
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(new { Status = false, Message = ex.Message });
-            }
-        }
-        [HttpPut]
-        [Route("api/editpinned")]
-        public async Task<IActionResult> EditPinned([FromBody] NoteModel note)
-        {
-            try
-            {
-                string message = await this.manager.EditPinned(note);
+                string message = await this.manager.PinnedUnPinned(note);
                 if (message.Equals("Note Pinned"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -127,12 +131,12 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPut]
-        [Route("api/editarchive")]
-        public async Task<IActionResult> EditArchive([FromBody] NoteModel note)
+        [Route("api/archiveunarchive")]
+        public async Task<IActionResult> ArchiveUnArchive([FromBody] NoteModel note)
         {
             try
             {
-                string message = await this.manager.EditArchive(note);
+                string message = await this.manager.ArchiveUnArchive(note);
                 if (message.Equals("Note Archived"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -173,13 +177,14 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPut]
-        [Route("api/editimage")]
-        public async Task<IActionResult> EditImage([FromBody] NoteModel note)
+        [Route("api/imageupload")]
+        public async Task<IActionResult> ImageUpload(IFormFile image, string NoteID)
         {
+            
             try
             {
-                string message = await this.manager.EditImage(note);
-                if (message.Equals("Image Updated Successfully"))
+                string message = await this.manager.ImageUpload(image, NoteID);
+                if (message.Equals("Image Uploaded Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
@@ -204,7 +209,24 @@ namespace FundooNotes.Controllers
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
-                else if (message.Equals("Note Restored"))
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = message });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+        [HttpPut]
+        [Route("api/restore")]
+        public async Task<IActionResult> Restore([FromBody] NoteModel note)
+        {
+            try
+            {
+                string message = await this.manager.Trash(note);
+                if (message.Equals("Note Restored"))
                 {
                     return this.Ok(new { Status = true, Message = message });
                 }
