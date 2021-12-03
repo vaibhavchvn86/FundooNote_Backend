@@ -4,6 +4,7 @@ using FundooModels;
 using FundooRepository.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,8 +54,22 @@ namespace FundooNotes.Controllers
                 string message = await this.manager.Login(logindetails);
                 if (message.Equals("Login Successful"))
                 {
+                    ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                    IDatabase database = connectionMultiplexer.GetDatabase();
+                    string firstName = database.StringGet("First Name");
+                    string lastName = database.StringGet("Last Name");
+                    string email = database.StringGet("Email");
+                    string userId = database.StringGet("UserId");
+
+                    RegisterModel data = new RegisterModel
+                    {
+                        FirstName = firstName,
+                        LastName = lastName,
+                        UserID = userId,
+                        Email = email
+                    };
                     string token = this.manager.GenerateToken(logindetails.Email);
-                    return this.Ok(new { Status = true, Message = message, LoginData =logindetails.Email, Token =token});
+                    return this.Ok(new { Status = true, Message = message, Data=data, Token =token});
                 }
                 else
                 {

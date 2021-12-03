@@ -179,37 +179,37 @@ namespace FundooRepository.Repository
         }
         public async Task<string> ImageUpload(IFormFile image, string noteID)
         {
-            try
-            {
-                var noteExist = await User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
-                if (noteExist != null)
-                {
+        //    try
+        //    {
+        //        var noteExist = await User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
+        //        if (noteExist != null)
+        //        {
 
-                    noteExist.Image = noteID.Image;
-                    await User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Image, noteID.Image));
+        //            noteExist.Image = noteID.Image;
+        //            await User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
+        //                Builders<NoteModel>.Update.Set(x => x.Image, noteID.Image));
 
-                    var Filename = image.FileName;
-                    var Stream = image.OpenReadStream();
-                    var cloudinary = new Cloudinary(this.configuration["CloudinaryAccount"]);
+        //            var Filename = image.FileName;
+        //            var Stream = image.OpenReadStream();
+        //            var cloudinary = new Cloudinary(this.configuration["CloudinaryAccount"]);
 
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(image.Filename, image.Stream),
-                    };
+        //            var uploadParams = new ImageUploadParams()
+        //            {
+        //                File = new FileDescription(image.Filename, image.Stream),
+        //            };
 
-                    var uploadResult = cloudinary.Upload(uploadParams);
+        //            var uploadResult = cloudinary.Upload(uploadParams);
 
-                    var uplPath = uploadResult.Url;
+        //            var uplPath = uploadResult.Url;
 
-                    return "Image Uploaded Successfully";
-                }
+        //            return "Image Uploaded Successfully";
+        //        }
                 return "Image not Uploaded";
-            }
-            catch (ArgumentNullException ex)
-            {
-                throw new Exception(ex.Message);
-            }
+        //    }
+        //    catch (ArgumentNullException ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }
         }
         public async Task<string> Trash(NoteModel note)
         {

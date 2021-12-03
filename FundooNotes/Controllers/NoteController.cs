@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class NoteController : ControllerBase
     {
         private readonly INoteManager manager;
@@ -20,6 +20,7 @@ namespace FundooNotes.Controllers
         {
             this.manager = manager;
         }
+
         [HttpPost]
         [Route("api/addnote")]
         public async Task<IActionResult> AddNote([FromBody] NoteModel note)
@@ -41,6 +42,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/editnote")]
         public async Task<IActionResult> EditNote([FromBody] NoteModel note)
@@ -84,6 +86,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpDelete]
         [Route("api/removereminder")]
         public async Task<IActionResult> RemoveReminder([FromBody] NoteModel note)
@@ -105,6 +108,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/pinnedunpinned")]
         public async Task<IActionResult> PinnedUnPinned([FromBody] NoteModel note)
@@ -130,6 +134,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/archiveunarchive")]
         public async Task<IActionResult> ArchiveUnArchive([FromBody] NoteModel note)
@@ -155,6 +160,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/editcolor")]
         public async Task<IActionResult> EditColor([FromBody] NoteModel note)
@@ -176,6 +182,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/imageupload")]
         public async Task<IActionResult> ImageUpload(IFormFile image, string NoteID)
@@ -198,6 +205,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/trash")]
         public async Task<IActionResult> Trash([FromBody] NoteModel note)
@@ -219,6 +227,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpPut]
         [Route("api/restore")]
         public async Task<IActionResult> Restore([FromBody] NoteModel note)
@@ -240,6 +249,7 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
         [HttpDelete]
         [Route("api/deleted")]
         public async Task<IActionResult> DeleteForever([FromBody] NoteModel note)
