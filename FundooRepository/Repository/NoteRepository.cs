@@ -29,8 +29,8 @@ namespace FundooRepository.Repository
         {
             try
             {
-                    await User.InsertOneAsync(note);
-                    return "Note Added Successfully";
+                await User.InsertOneAsync(note);
+                return "Note Added Successfully";
             }
             catch (Exception ex)
             {
@@ -48,10 +48,10 @@ namespace FundooRepository.Repository
                     await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Title, note.Title));
 
-                     noteExist.Description = note.Description;
-                     await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
-                         Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
-                     return "Note Updated Successfully";
+                    noteExist.Description = note.Description;
+                    await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
+                    return "Note Updated Successfully";
                 }
                 return "Note does not exist";
             }
@@ -184,7 +184,7 @@ namespace FundooRepository.Repository
                 var noteExist = await User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    
+
                     noteExist.Image = noteID.Image;
                     await User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Image, noteID.Image));
@@ -270,6 +270,23 @@ namespace FundooRepository.Repository
                     return "note not deleted";
                 }
                 return "Note not Found";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetNotes(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = User.AsQueryable<NoteModel>().Where(x => x.UserID == userId).ToList();
+                if (note != null)
+                {
+                    return note;
+                }
+                return null;
             }
             catch (ArgumentNullException ex)
             {

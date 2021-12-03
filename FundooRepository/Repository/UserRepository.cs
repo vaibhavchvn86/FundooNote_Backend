@@ -28,6 +28,7 @@ namespace FundooRepository.Repository
 
             User = database.GetCollection<RegisterModel>("User");
         }
+
         public async Task<string> Register(RegisterModel user)
         {
             try
@@ -45,6 +46,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+
         public async Task<string> Login(LoginModel logindetails)
         {
             try
@@ -98,6 +100,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+
         public void SendMSMQ()
         {
             MessageQueue msgqueue;
@@ -114,6 +117,7 @@ namespace FundooRepository.Repository
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }
+
         public string ReceiveMSMQ()
         {
             MessageQueue msgqueue = new MessageQueue(@".\Private$\Fundoo");
@@ -141,7 +145,6 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-
 
         public string GenerateToken(string email)
         {

@@ -20,5 +20,6 @@ namespace FundooManager.Interface
         Task<string> Trash(NoteModel note);
         Task<string> Restore(NoteModel note);
         Task<string> DeleteForever(NoteModel note);
+        IEnumerable<NoteModel> GetNotes(string userId);
     }
 }

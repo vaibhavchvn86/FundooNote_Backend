@@ -138,5 +138,17 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public IEnumerable<NoteModel> GetNotes(string userId)
+        {
+            try
+            {
+                return this.NoteRepository.GetNotes(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
