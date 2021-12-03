@@ -16,7 +16,7 @@ namespace FundooRepository.Interface
         Task<string> PinnedUnPinned(NoteModel note);
         Task<string> ArchiveUnArchive(NoteModel note);
         Task<string> EditColor(NoteModel note);
-        Task<string> ImageUpload(IFormFile image, string noteID);
+        Task<string> ImageUpload(string noteID, IFormFile image);
         Task<string> Trash(NoteModel note);
         Task<string> Restore(NoteModel note);
         Task<string> DeleteForever(NoteModel note);

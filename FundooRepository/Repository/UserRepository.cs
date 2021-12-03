@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Experimental.System.Messaging;
 using System.Threading.Tasks;
+using StackExchange.Redis;
 
 namespace FundooRepository.Repository
 {
@@ -57,6 +58,14 @@ namespace FundooRepository.Repository
                     var PasswordExist = await User.AsQueryable<RegisterModel>().Where(x => x.Password == logindetails.Password).FirstOrDefaultAsync();
                     if (PasswordExist != null)
                     {
+                       
+                                        ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
+                                        IDatabase database = connectionMultiplexer.GetDatabase();
+                                        database.StringSet(key: "First Name", PasswordExist.FirstName);
+                                        database.StringSet(key: "Last Name", PasswordExist.LastName);
+                                        database.StringSet(key: "Email", PasswordExist.Email);
+                                        database.StringSet(key: "UserId", PasswordExist.UserID);
+                                   
                         return "Login Successful";
                     }
                     return "Enter valid Password";
@@ -68,6 +77,7 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+
         public async Task<string> ForgetPassword(ForgetModel MYEmail)
         {
             

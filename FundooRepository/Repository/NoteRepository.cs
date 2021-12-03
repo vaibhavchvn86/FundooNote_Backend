@@ -16,7 +16,7 @@ namespace FundooRepository.Repository
     public class NoteRepository : INoteRepository
     {
         private readonly IMongoCollection<NoteModel> User;
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
         public NoteRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
         {
             this.configuration = configuration;
@@ -177,34 +177,27 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> ImageUpload(IFormFile image, string noteID)
+        public async Task<string> ImageUpload(string noteID, IFormFile image)
         {
             try
             {
-                var noteExist = await User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
-                if (noteExist != null)
+                Account account = new Account(this.configuration["CloudinaryAccount:Name"], this.configuration["CloudinaryAccount:ApiKey"], this.configuration["CloudinaryAccount:ApiSecret"]);
+                var cloudinary = new Cloudinary(account);
+                var uploadparams = new ImageUploadParams()
                 {
-
-                    noteExist.Image = noteID.Image;
-                    await User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Image, noteID.Image));
-
-                    var Filename = image.FileName;
-                    var Stream = image.OpenReadStream();
-                    var cloudinary = new Cloudinary(this.configuration["CloudinaryAccount"]);
-
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(image.Filename, image.Stream),
-                    };
-
-                    var uploadResult = cloudinary.Upload(uploadParams);
-
-                    var uplPath = uploadResult.Url;
-
+                    File = new FileDescription(image.FileName, image.OpenReadStream()),
+                };
+                var uploadResult = cloudinary.Upload(uploadparams);
+                string imagePath = uploadResult.Url.ToString();
+                var NoteExists = User.AsQueryable().Where(x => x.NoteID == noteID).SingleOrDefault();
+                if (NoteExists != null)
+                {
+                    NoteExists.Image = imagePath;
+                    await User.UpdateOneAsync(x => x.NoteID == noteID,
+                        Builders<NoteModel>.Update.Set(x => x.Image, NoteExists.Image));
                     return "Image Uploaded Successfully";
                 }
-                return "Image not Uploaded";
+                return "Note Does not Exist";
             }
             catch (ArgumentNullException ex)
             {

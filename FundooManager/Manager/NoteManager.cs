@@ -94,11 +94,11 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> ImageUpload(IFormFile image, string noteID)
+        public async Task<string> ImageUpload(string noteID, IFormFile image)
         {
             try
             {
-                return await this.NoteRepository.ImageUpload(image, noteID);
+                return await this.NoteRepository.ImageUpload(noteID, image);
             }
             catch (Exception ex)
             {
