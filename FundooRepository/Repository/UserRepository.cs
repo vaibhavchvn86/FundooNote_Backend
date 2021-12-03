@@ -20,7 +20,7 @@ namespace FundooRepository.Repository
     public class UserRepository : IUserRepository
     {
         private readonly IMongoCollection<RegisterModel> User;
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
        public UserRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
         {
             this.configuration = configuration;

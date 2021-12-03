@@ -274,7 +274,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                IEnumerable<NoteModel> note = User.AsQueryable<NoteModel>().Where(x => x.UserID == userId).ToList();
+                IEnumerable<NoteModel> note = User.AsQueryable<NoteModel>().Where(x => x.UserID == userId && x.Archive == false && x.Trash == false).ToList();
                 if (note != null)
                 {
                     return note;
