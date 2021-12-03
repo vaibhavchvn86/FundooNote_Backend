@@ -286,5 +286,56 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
+
+        public IEnumerable<NoteModel> GetReminder(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = User.AsQueryable<NoteModel>().Where(x => x.UserID == userId && x.Reminder != null).ToList();
+                if (note != null)
+                {
+                    return note;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetArchive(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = User.AsQueryable<NoteModel>().Where(x => x.UserID == userId && x.Archive == true).ToList();
+                if (note != null)
+                {
+                    return note;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetTrash(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = User.AsQueryable<NoteModel>().Where(x => x.UserID == userId && x.Trash == true).ToList();
+                if (note != null)
+                {
+                    return note;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -150,5 +150,41 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
+
+        public IEnumerable<NoteModel> GetArchive(string userId)
+        {
+            try
+            {
+                return this.NoteRepository.GetArchive(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetTrash(string userId)
+        {
+            try
+            {
+                return this.NoteRepository.GetTrash(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetReminder(string userId)
+        {
+            try
+            {
+                return this.NoteRepository.GetReminder(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

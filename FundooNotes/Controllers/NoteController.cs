@@ -293,5 +293,71 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
+
+        [HttpGet]
+        [Route("api/getreminder")]
+        public IActionResult GetReminder(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = this.manager.GetNotes(userId);
+                if (note != null)
+                {
+                    return this.Ok(new { Status = true, Message = "Notes Retrieved SuccessFully", Data = note });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Notes not Found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("api/getarchive")]
+        public IActionResult GetArchive(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = this.manager.GetArchive(userId);
+                if (note != null)
+                {
+                    return this.Ok(new { Status = true, Message = "Archive Notes Retrieved SuccessFully", Data = note });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Notes not Found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("api/gettrash")]
+        public IActionResult GetTrash(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = this.manager.GetTrash(userId);
+                if (note != null)
+                {
+                    return this.Ok(new { Status = true, Message = "Archive Notes Retrieved SuccessFully", Data = note });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Notes not Found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
     }
 }

@@ -21,5 +21,8 @@ namespace FundooRepository.Interface
         Task<string> Restore(NoteModel note);
         Task<string> DeleteForever(NoteModel note);
         IEnumerable<NoteModel> GetNotes(string userId);
+        IEnumerable<NoteModel> GetReminder(string userId);
+        IEnumerable<NoteModel> GetArchive(string userId);
+        IEnumerable<NoteModel> GetTrash(string userId);
     }
 }
