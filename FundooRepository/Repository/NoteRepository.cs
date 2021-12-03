@@ -15,7 +15,7 @@ namespace FundooRepository.Repository
 {
     public class NoteRepository : INoteRepository
     {
-        private readonly IMongoCollection<NoteModel> _User;
+        private readonly IMongoCollection<NoteModel> User;
         private IConfiguration configuration;
         public NoteRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
         {
@@ -23,13 +23,13 @@ namespace FundooRepository.Repository
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _User = database.GetCollection<NoteModel>("User");
+            User = database.GetCollection<NoteModel>("User");
         }
         public async Task<string> AddNote(NoteModel note)
         {
             try
             {
-                    await _User.InsertOneAsync(note);
+                    await User.InsertOneAsync(note);
                     return "Note Added Successfully";
             }
             catch (Exception ex)
@@ -41,15 +41,15 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     noteExist.Title = note.Title;
-                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                    await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Title, note.Title));
 
                      noteExist.Description = note.Description;
-                     await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                     await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                          Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
                      return "Note Updated Successfully";
                 }
@@ -64,11 +64,11 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     noteExist.Reminder = note.Reminder;
-                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                    await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Reminder, note.Reminder));
                     return "Reminder Added Successfully";
                 }
@@ -83,11 +83,11 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     noteExist.Reminder = note.Reminder;
-                    await _User.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                    await User.DeleteOneAsync(x => x.NoteID == note.NoteID);
                     return "Reminder Deleted Successfully";
                 }
                 return "Reminder not edited";
@@ -102,21 +102,21 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Pinned.Equals(false))
                     {
                         noteExist.Archive = false;
                         noteExist.Pinned = note.Pinned;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, note.Pinned));
                         return "Note Pinned";
                     }
                     if (noteExist.Pinned.Equals(true))
                     {
                         noteExist.Pinned = note.Pinned;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, note.Pinned));
                         return "Note UnPinned";
                     }
@@ -132,21 +132,21 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Archive.Equals(false))
                     {
                         noteExist.Pinned = false;
                         noteExist.Archive = noteExist.Archive;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, note.Archive));
                         return "Note Archived";
                     }
                     if (noteExist.Archive.Equals(true))
                     {
                         noteExist.Archive = note.Archive;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, note.Archive));
                         return "Note UnArchived";
                     }
@@ -162,11 +162,11 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     noteExist.Color = note.Color;
-                    await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                    await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
                     return "Color Changed Successfully";
                 }
@@ -181,12 +181,12 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == noteID.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     
                     noteExist.Image = noteID.Image;
-                    await _User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
+                    await User.UpdateOneAsync(x => x.NoteID == noteID.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Image, noteID.Image));
 
                     var Filename = image.FileName;
@@ -200,7 +200,7 @@ namespace FundooRepository.Repository
 
                     var uploadResult = cloudinary.Upload(uploadParams);
 
-                    var uplPath = uploadResult.Uri;
+                    var uplPath = uploadResult.Url;
 
                     return "Image Uploaded Successfully";
                 }
@@ -215,25 +215,18 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Trash.Equals(false))
                     {
                         noteExist.Trash = note.Trash;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, note.Trash));
                         return "Note Trashed";
                     }
-                    if (noteExist.Trash.Equals(true))
-                    {
-                        noteExist.Trash = note.Trash;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
-                            Builders<NoteModel>.Update.Set(x => x.Trash, note.Trash));
-                        return "Note Restored";
-                    }
                 }
-                return "Note not Trashed";
+                return "Note not Found";
             }
             catch (ArgumentNullException ex)
             {
@@ -244,13 +237,13 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Trash.Equals(true))
                     {
                         noteExist.Trash = note.Trash;
-                        await _User.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await User.UpdateOneAsync(x => x.NoteID == note.NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, note.Trash));
                         return "Note Restored";
                     }
@@ -266,12 +259,12 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var noteExist = await _User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await User.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Trash.Equals(true))
                     {
-                        await _User.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                        await User.DeleteOneAsync(x => x.NoteID == note.NoteID);
                         return "Note Deleted";
                     }
                     return "note not deleted";

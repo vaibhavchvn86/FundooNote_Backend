@@ -18,7 +18,7 @@ namespace FundooRepository.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IMongoCollection<RegisterModel> _User;
+        private readonly IMongoCollection<RegisterModel> User;
         private IConfiguration configuration;
        public UserRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
         {
@@ -26,16 +26,16 @@ namespace FundooRepository.Repository
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _User = database.GetCollection<RegisterModel>("User");
+            User = database.GetCollection<RegisterModel>("User");
         }
         public async Task<string> Register(RegisterModel user)
         {
             try
             {
-                var ifExist = await _User.AsQueryable<RegisterModel>().SingleOrDefaultAsync(e => e.Email == user.Email);
+                var ifExist = await User.AsQueryable<RegisterModel>().SingleOrDefaultAsync(e => e.Email == user.Email);
                 if (ifExist == null)
                 {
-                    await _User.InsertOneAsync(user);
+                    await User.InsertOneAsync(user);
                     return "Register Successful";
                 }
                 return "Email Already Exist";
@@ -49,10 +49,10 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var EmailExist = await _User.AsQueryable<RegisterModel>().Where(x => (x.Email == logindetails.Email)).FirstOrDefaultAsync();
+                var EmailExist = await User.AsQueryable<RegisterModel>().Where(x => (x.Email == logindetails.Email)).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
-                    var PasswordExist = await _User.AsQueryable<RegisterModel>().Where(x => x.Password == logindetails.Password).FirstOrDefaultAsync();
+                    var PasswordExist = await User.AsQueryable<RegisterModel>().Where(x => x.Password == logindetails.Password).FirstOrDefaultAsync();
                     if (PasswordExist != null)
                     {
                         return "Login Successful";
@@ -71,7 +71,7 @@ namespace FundooRepository.Repository
             
             try
             {
-                var EmailExist = await _User.AsQueryable<RegisterModel>().Where(x => x.Email == MYEmail.Email).FirstOrDefaultAsync();
+                var EmailExist = await User.AsQueryable<RegisterModel>().Where(x => x.Email == MYEmail.Email).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
                     MailMessage mail = new MailMessage();
@@ -126,11 +126,11 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var EmailExist = await _User.AsQueryable().Where(x => x.Email == newpassword.Email).FirstOrDefaultAsync();
+                var EmailExist = await User.AsQueryable().Where(x => x.Email == newpassword.Email).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
                         EmailExist.Password = newpassword.Password;
-                        await _User.UpdateOneAsync(x => x.Email == newpassword.Email,
+                        await User.UpdateOneAsync(x => x.Email == newpassword.Email,
                             Builders<RegisterModel>.Update.Set(x => x.Password, newpassword.Password));
                         return "Reset Password Successful";
                 }
