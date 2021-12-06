@@ -1,0 +1,332 @@
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using FundooModels;
+using FundooRepository.Interface;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FundooRepository.Repository
+{
+    public class NoteRepository : INoteRepository
+    {
+        private readonly IMongoCollection<NoteModel> Note;
+        private readonly IConfiguration configuration;
+        public NoteRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
+        {
+            this.configuration = configuration;
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+
+            Note = database.GetCollection<NoteModel>("Note");
+        }
+        public async Task<string> AddNote(NoteModel note)
+        {
+            try
+            {
+                await Note.InsertOneAsync(note);
+                return "Note Added Successfully";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> EditNote(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Title, note.Title));
+
+                    await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
+                    return "Note Updated Successfully";
+                }
+                return "Note does not exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> AddReminder(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Reminder, note.Reminder));
+                    return "Reminder Added Successfully";
+                }
+                return "Reminder not Added";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> RemoveReminder(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    await Note.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                    return "Reminder Deleted Successfully";
+                }
+                return "Reminder not edited";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<string> PinnedUnPinned(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    if (noteExist.Pinned.Equals(false))
+                    {
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Archive, false));
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Pinned, true));
+                        return "Note Pinned";
+                    }
+                    if (noteExist.Pinned.Equals(true))
+                    {
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Pinned, false));
+                        return "Note UnPinned";
+                    }
+                }
+                return "Note Doesnot Exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> ArchiveUnArchive(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    if (noteExist.Archive.Equals(false))
+                    {
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Pinned, false));
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Archive, true));
+                        return "Note Archived";
+                    }
+                    if (noteExist.Archive.Equals(true))
+                    {
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Archive, false));
+                        return "Note UnArchived";
+                    }
+                }
+                return "Note Doesnot Exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> EditColor(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
+                    return "Color Changed Successfully";
+                }
+                return "Color not Changed";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> ImageUpload(string noteID, IFormFile image)
+        {
+            try
+            {
+                Account account = new Account(this.configuration["CloudinaryAccount:Name"], this.configuration["CloudinaryAccount:ApiKey"], this.configuration["CloudinaryAccount:ApiSecret"]);
+                var cloudinary = new Cloudinary(account);
+                var uploadparams = new ImageUploadParams()
+                {
+                    File = new FileDescription(image.FileName, image.OpenReadStream()),
+                };
+                var uploadResult = cloudinary.Upload(uploadparams);
+                string imagePath = uploadResult.Url.ToString();
+                var NoteExists = Note.AsQueryable().Where(x => x.NoteID == noteID).SingleOrDefault();
+                if (NoteExists != null)
+                {
+                    NoteExists.Image = imagePath;
+                    await Note.UpdateOneAsync(x => x.NoteID == noteID,
+                        Builders<NoteModel>.Update.Set(x => x.Image, NoteExists.Image));
+                    return "Image Uploaded Successfully";
+                }
+                return "Note Does not Exist";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> Trash(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    if (noteExist.Trash.Equals(false))
+                    {
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Trash, true));
+                        return "Note Trashed";
+                    }
+                }
+                return "Note not Found";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> Restore(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    if (noteExist.Trash.Equals(true))
+                    {
+                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                            Builders<NoteModel>.Update.Set(x => x.Trash, false));
+                        return "Note Restored";
+                    }
+                }
+                return "Note not Found";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<string> DeleteForever(NoteModel note)
+        {
+            try
+            {
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                if (noteExist != null)
+                {
+                    if (noteExist.Trash.Equals(true))
+                    {
+                        await Note.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                        return "Note Deleted";
+                    }
+                    return "Note not deleted";
+                }
+                return "Note not Found";
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetNotes(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> note = Note.AsQueryable().Where(x => x.UserID == userId && x.Archive == false && x.Trash == false).ToList();
+                if (note != null)
+                {
+                    return note;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetReminder(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> reminder = Note.AsQueryable().Where(x => x.UserID == userId && x.Reminder != null).ToList();
+                if (reminder != null)
+                {
+                    return reminder;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetArchive(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> archive = Note.AsQueryable().Where(x => x.UserID == userId && x.Archive == true).ToList();
+                if (archive != null)
+                {
+                    return archive;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<NoteModel> GetTrash(string userId)
+        {
+            try
+            {
+                IEnumerable<NoteModel> trash = Note.AsQueryable<NoteModel>().Where(x => x.UserID == userId && x.Trash == true).ToList();
+                if (trash != null)
+                {
+                    return trash;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+}
