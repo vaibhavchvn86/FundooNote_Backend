@@ -1,7 +1,12 @@
-﻿using FundooModels;
-using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "ILabelManager.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooModels;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooManager.Interface
@@ -9,10 +14,10 @@ namespace FundooManager.Interface
     public interface ILabelManager
     {
         Task<string> CreateLabel(LabelModel label);
-        Task<string> EditLabel(LabelModel label);
+        Task<string> EditLabel(string LabelID, string label);
         Task<string> AddLabel(LabelModel label);
-        Task<string> RemoveLabel(LabelModel label);
-        Task<string> DeleteLabel(LabelModel label);
+        Task<string> RemoveLabel(string LabelID);
+        Task<string> DeleteLabel(string LabelID);
         IEnumerable<LabelModel> GetLabelByNoteId(string noteId);
         IEnumerable<LabelModel> GetLabelByUserId(string userId);
     }

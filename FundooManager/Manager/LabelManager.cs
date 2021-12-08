@@ -1,10 +1,15 @@
-﻿using FundooManager.Interface;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "LabelManager.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooManager.Interface;
 using FundooModels;
 using FundooRepository.Interface;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooManager.Manager
@@ -29,11 +34,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public async Task<string> EditLabel(LabelModel label)
+        public async Task<string> EditLabel(string LabelID, string label)
         {
             try
             {
-                return await this.LabelRepository.EditLabel(label);
+                return await this.LabelRepository.EditLabel(LabelID, label);
             }
             catch (Exception ex)
             {
@@ -52,11 +57,11 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> DeleteLabel(LabelModel label)
+        public async Task<string> DeleteLabel(string LabelID)
         {
             try
             {
-                return await this.LabelRepository.DeleteLabel(label);
+                return await this.LabelRepository.DeleteLabel(LabelID);
             }
             catch (Exception ex)
             {
@@ -64,11 +69,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public async Task<string> RemoveLabel(LabelModel label)
+        public async Task<string> RemoveLabel(string LabelID)
         {
             try
             {
-                return await this.LabelRepository.RemoveLabel(label);
+                return await this.LabelRepository.RemoveLabel(LabelID);
             }
             catch (Exception ex)
             {

@@ -1,9 +1,15 @@
-﻿using FundooManager.Interface;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "LabelController.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooManager.Interface;
 using FundooModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -42,11 +48,11 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("editlabel")]
-        public async Task<IActionResult> EditLabel([FromBody] LabelModel label)
+        public async Task<IActionResult> EditLabel(string LabelID, string label)
         {
             try
             {
-                string message = await this.manager.EditLabel(label);
+                string message = await this.manager.EditLabel(LabelID, label);
                 if (message.Equals("Label Edited Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -86,7 +92,7 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("removelabel")]
-        public async Task<IActionResult> RemoveLabel([FromBody] LabelModel label)
+        public async Task<IActionResult> RemoveLabel(string label)
         {
             try
             {
@@ -108,7 +114,7 @@ namespace FundooNotes.Controllers
 
         [HttpDelete]
         [Route("deletelabel")]
-        public async Task<IActionResult> DeleteLabel([FromBody] LabelModel label)
+        public async Task<IActionResult> DeleteLabel(string label)
         {
             try
             {

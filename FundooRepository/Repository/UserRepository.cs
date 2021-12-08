@@ -1,13 +1,18 @@
-﻿using FundooModels;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "UserRepository.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooModels;
 using FundooRepository.Interface;
 using MongoDB.Driver;
 using System;
 using MongoDB.Driver.Linq;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Text;
 using System.Net.Mail;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -49,14 +54,14 @@ namespace FundooRepository.Repository
             }
         }
 
-        public async Task<string> Login(LoginModel logindetails)
+        public async Task<string> Login(string email, string password)
         {
             try
             {
-                var EmailExist = await User.AsQueryable().Where(x => (x.Email == logindetails.Email)).FirstOrDefaultAsync();
+                var EmailExist = await User.AsQueryable().Where(x => (x.Email == email)).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
-                    var PasswordExist = await User.AsQueryable().Where(x => x.Password == logindetails.Password).FirstOrDefaultAsync();
+                    var PasswordExist = await User.AsQueryable().Where(x => x.Password == password).FirstOrDefaultAsync();
                     if (PasswordExist != null)
                     {
                        
@@ -79,19 +84,19 @@ namespace FundooRepository.Repository
             }
         }
 
-        public async Task<string> ForgetPassword(ForgetModel MYEmail)
+        public async Task<string> ForgetPassword(string MYEmail)
         {
             
             try
             {
-                var EmailExist = await User.AsQueryable().Where(x => x.Email == MYEmail.Email).FirstOrDefaultAsync();
+                var EmailExist = await User.AsQueryable().Where(x => x.Email == MYEmail).FirstOrDefaultAsync();
                 if (EmailExist != null)
                 {
                     MailMessage mail = new MailMessage();
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                     mail.From = new MailAddress(this.configuration["Credentials:Email"]);
-                    mail.To.Add(MYEmail.Email);
+                    mail.To.Add(MYEmail);
                     mail.Subject = "Reset Password for FundooNotes";
                     SendMSMQ();
                     mail.Body = ReceiveMSMQ();

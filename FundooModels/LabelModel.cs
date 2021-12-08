@@ -1,9 +1,13 @@
-﻿using MongoDB.Bson;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "LabelModel.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace FundooModels
 {

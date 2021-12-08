@@ -1,0 +1,21 @@
+2021-12-07 10:12:00.8033|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 10:12:00.8946|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 10:12:00.9112|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-07 10:29:48.7568|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 10:29:48.8486|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 10:29:48.8595|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-07 10:51:33.9051|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 10:51:33.9371|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 10:51:33.9371|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-07 11:13:48.5481|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 11:13:48.5888|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 11:13:48.5953|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-07 11:18:57.9745|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 11:18:58.0174|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 11:18:58.0174|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-07 11:28:10.0347|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 11:28:10.0713|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 11:28:10.0793|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-07 11:30:18.1114|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-07 11:30:18.1495|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-07 11:30:18.1564|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes

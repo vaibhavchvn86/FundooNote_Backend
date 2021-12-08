@@ -1,14 +1,16 @@
-﻿using FundooManager.Interface;
-using FundooManager.Manager;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "UserController.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooManager.Interface;
 using FundooModels;
-using FundooRepository.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -53,12 +55,12 @@ namespace FundooNotes.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel logindetails)
+        public async Task<IActionResult> Login(string Email, string password)
         {
             try
             {
-                this.logger.LogInformation(logindetails.Email + " is trying to Login");
-                string message = await this.manager.Login(logindetails);
+                this.logger.LogInformation(Email + " is trying to Login");
+                string message = await this.manager.Login(Email, password);
                 if (message.Equals("Login Successful"))
                 {
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
@@ -75,46 +77,46 @@ namespace FundooNotes.Controllers
                         UserID = userId,
                         Email = email
                     };
-                    string token = this.manager.GenerateToken(logindetails.Email);
-                    this.logger.LogInformation(logindetails.Email + " has Login Successfully");
+                    string token = this.manager.GenerateToken(Email);
+                    this.logger.LogInformation(Email + " has Login Successfully");
                     return this.Ok(new { Status = true, Message = message, Data=data, Token =token});
                 }
                 else
                 {
-                    this.logger.LogInformation(logindetails.Email + " is not Logged in");
+                    this.logger.LogInformation(Email + " is not Logged in");
                     return this.BadRequest(new { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogInformation(logindetails.Email + " has an Exception in Logged");
+                this.logger.LogInformation(Email + " has an Exception in Logged");
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
 
         [HttpPost]
         [Route("forget")]
-        public async Task<IActionResult> Forget([FromBody] ForgetModel email)
+        public async Task<IActionResult> Forget(string email)
         {
             try
             {
-                this.logger.LogInformation(email.Email + " is trying to send reset link");
+                this.logger.LogInformation(email + " is trying to send reset link");
                 string message = await this.manager.ForgetPassword(email);
                 if (message.Equals("Reset Link send to Your Email"))
                 {
-                    this.logger.LogInformation(email.Email + " has sent Link successfully");
+                    this.logger.LogInformation(email + " has sent Link successfully");
                     return this.Ok(new { Status = true, Message = message });
 
                 }
                 else
                 {
-                    this.logger.LogInformation(email.Email + " cannot sent Link");
+                    this.logger.LogInformation(email + " cannot sent Link");
                     return this.BadRequest(new { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogInformation(email.Email + " has an Exception in Logged");
+                this.logger.LogInformation(email + " has an Exception in Logged");
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }

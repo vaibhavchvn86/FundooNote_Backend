@@ -1,13 +1,16 @@
-﻿using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "NoteController.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
 using FundooManager.Interface;
 using FundooModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -70,11 +73,11 @@ namespace FundooNotes.Controllers
         
         [HttpPut]
         [Route("addreminder")]
-        public async Task<IActionResult> AddReminder([FromBody] NoteModel note)
+        public async Task<IActionResult> AddReminder(string NoteID, string Reminder)
         {
             try
             {
-                string message = await this.manager.AddReminder(note);
+                string message = await this.manager.AddReminder(NoteID, Reminder);
                 if (message.Equals("Reminder Added Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -92,11 +95,11 @@ namespace FundooNotes.Controllers
 
         [HttpDelete]
         [Route("removereminder")]
-        public async Task<IActionResult> RemoveReminder([FromBody] NoteModel note)
+        public async Task<IActionResult> RemoveReminder(string NoteID)
         {
             try
             {
-                string message = await this.manager.RemoveReminder(note);
+                string message = await this.manager.RemoveReminder(NoteID);
                 if (message.Equals("Reminder Deleted Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -114,11 +117,11 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("pinnedunpinned")]
-        public async Task<IActionResult> PinnedUnPinned([FromBody] NoteModel note)
+        public async Task<IActionResult> PinnedUnPinned(string NoteID)
         {
             try
             {
-                string message = await this.manager.PinnedUnPinned(note);
+                string message = await this.manager.PinnedUnPinned(NoteID);
                 if (message.Equals("Note Pinned"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -140,11 +143,11 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("archiveunarchive")]
-        public async Task<IActionResult> ArchiveUnArchive([FromBody] NoteModel note)
+        public async Task<IActionResult> ArchiveUnArchive(string NoteID)
         {
             try
             {
-                string message = await this.manager.ArchiveUnArchive(note);
+                string message = await this.manager.ArchiveUnArchive(NoteID);
                 if (message.Equals("Note Archived"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -166,11 +169,11 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("editcolor")]
-        public async Task<IActionResult> EditColor([FromBody] NoteModel note)
+        public async Task<IActionResult> EditColor(string NoteID, string color)
         {
             try
             {
-                string message = await this.manager.EditColor(note);
+                string message = await this.manager.EditColor(NoteID, color);
                 if (message.Equals("Color Changed Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -210,11 +213,11 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("trash")]
-        public async Task<IActionResult> Trash([FromBody] NoteModel note)
+        public async Task<IActionResult> Trash(string NoteID)
         {
             try
             {
-                string message = await this.manager.Trash(note);
+                string message = await this.manager.Trash(NoteID);
                 if (message.Equals("Note Trashed"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -232,11 +235,11 @@ namespace FundooNotes.Controllers
 
         [HttpPut]
         [Route("restore")]
-        public async Task<IActionResult> Restore([FromBody] NoteModel note)
+        public async Task<IActionResult> Restore(string NoteID)
         {
             try
             {
-                string message = await this.manager.Restore(note);
+                string message = await this.manager.Restore(NoteID);
                 if (message.Equals("Note Restored"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -254,11 +257,11 @@ namespace FundooNotes.Controllers
 
         [HttpDelete]
         [Route("deleted")]
-        public async Task<IActionResult> DeleteForever([FromBody] NoteModel note)
+        public async Task<IActionResult> DeleteForever(string NoteID)
         {
             try
             {
-                string message = await this.manager.DeleteForever(note);
+                string message = await this.manager.DeleteForever(NoteID);
                 if (message.Equals("Note Deleted"))
                 {
                     return this.Ok(new { Status = true, Message = message });
