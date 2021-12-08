@@ -20,7 +20,8 @@ namespace FundooRepository.Interface
         Task<string> AddLabel(LabelModel label);
         Task<string> RemoveLabel(string LabelID);
         Task<string> DeleteLabel(string LabelID);
-        IEnumerable<LabelModel> GetLabelByLabelId();
-        IEnumerable<LabelModel> GetLabelByUserId(string userId);
+        IEnumerable<LabelModel> GetLabel();
+        IEnumerable<LabelModel> GetLabelByNoteId(string NoteId);
+        IEnumerable<LabelModel> GetNoteByLabelId(string LabelID);
     }
 }

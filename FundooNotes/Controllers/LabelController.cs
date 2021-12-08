@@ -135,12 +135,12 @@ namespace FundooNotes.Controllers
         }
 
         [HttpGet]
-        [Route("getlabelbynoteid")]
-        public IActionResult GetLabelByLabelId()
+        [Route("getlabel")]
+        public IActionResult GetLabel()
         {
             try
             {
-                IEnumerable<LabelModel> label = this.manager.GetLabelByLabelId();
+                IEnumerable<LabelModel> label = this.manager.GetLabel();
                 if (label != null)
                 {
                     return this.Ok(new { Status = true, Message = "Note Labels Retrieved SuccessFully", Data = label });
@@ -157,15 +157,37 @@ namespace FundooNotes.Controllers
         }
 
         [HttpGet]
-        [Route("getlabelbyuserid")]
-        public IActionResult GetLabelByUserId(string noteId)
+        [Route("getlabelbynoteid")]
+        public IActionResult GetLabelByNoteId(string noteId)
         {
             try
             {
-                IEnumerable<LabelModel> label = this.manager.GetLabelByUserId(noteId);
+                IEnumerable<LabelModel> label = this.manager.GetLabelByNoteId(noteId);
                 if (label != null)
                 {
                     return this.Ok(new { Status = true, Message = "All Labels Retrieved SuccessFully", Data = label });
+                }
+                else
+                {
+                    return this.BadRequest(new { Status = false, Message = "Labels not Found" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(new { Status = false, Message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("getnotebylabelid")]
+        public IActionResult GetNoteByLabelId(string LabelID)
+        {
+            try
+            {
+                IEnumerable<LabelModel> label = this.manager.GetNoteByLabelId(LabelID);
+                if (label != null)
+                {
+                    return this.Ok(new { Status = true, Message = "All Note Retrieved by Label SuccessFully", Data = label });
                 }
                 else
                 {

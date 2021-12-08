@@ -81,11 +81,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<LabelModel> GetLabelByLabelId()
+        public IEnumerable<LabelModel> GetLabel()
         {
             try
             {
-                return this.LabelRepository.GetLabelByLabelId();
+                return this.LabelRepository.GetLabel();
             }
             catch (Exception ex)
             {
@@ -93,11 +93,23 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<LabelModel> GetLabelByUserId(string userId)
+        public IEnumerable<LabelModel> GetLabelByNoteId(string NoteId)
         {
             try
             {
-                return this.LabelRepository.GetLabelByUserId(userId);
+                return this.LabelRepository.GetLabelByNoteId(NoteId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<LabelModel> GetNoteByLabelId(string LabelID)
+        {
+            try
+            {
+                return this.LabelRepository.GetNoteByLabelId(LabelID);
             }
             catch (Exception ex)
             {

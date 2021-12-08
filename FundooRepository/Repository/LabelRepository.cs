@@ -124,18 +124,18 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<LabelModel> GetLabelByLabelId()
+        public IEnumerable<LabelModel> GetLabel()
         {
             try
             {
-                //IEnumerable<LabelModel> label = Label.AsQueryable().Where(x => x.NoteID == noteId).ToList();
-                var label = (from p in Note.AsQueryable()
-                             join o in Label.AsQueryable()
-                             on p.NoteID equals o.NoteID into joinlabel
-                             select joinlabel);
+                IEnumerable<LabelModel> label = Label.AsQueryable().ToList();
+                ////var label = (from p in Note.AsQueryable()
+                ////             join o in Label.AsQueryable()
+                ////             on p.NoteID equals o.NoteID into joinlabel
+                ////             select joinlabel);
                 if (label != null)
                 {
-                    return (IEnumerable<LabelModel>)label;
+                    return label;
                 }
                 return null;
             }
@@ -145,11 +145,33 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<LabelModel> GetLabelByUserId(string userId)
+        public IEnumerable<LabelModel> GetLabelByNoteId(string NoteId)
         {
             try
             {
-                IEnumerable<LabelModel> label = Label.AsQueryable().Where(x => x.NoteID == userId && x.UserID == userId).ToList();
+                IEnumerable<LabelModel> label = Label.AsQueryable().Where(x => x.UserID == NoteId).ToList();
+                ////var label = from p in User.AsQueryable()
+                ////            join o in Label.AsQueryable()
+                ////            on p.UserID equals o.UserID into joinednote
+                ////            select joinednote;
+
+                if (label != null)
+                {
+                    return label;
+                }
+                return null;
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<LabelModel> GetNoteByLabelId(string LabelID)
+        {
+            try
+            {
+                IEnumerable<LabelModel> label = Label.AsQueryable().Where(x => x.LabelID == LabelID).ToList();
                 ////var label = from p in User.AsQueryable()
                 ////            join o in Label.AsQueryable()
                 ////            on p.UserID equals o.UserID into joinednote
