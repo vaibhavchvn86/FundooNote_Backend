@@ -1,10 +1,16 @@
-﻿using FundooModels;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "CollaboratorRepository.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooModels;
 using FundooRepository.Interface;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooRepository.Repository
@@ -26,12 +32,12 @@ namespace FundooRepository.Repository
             try
             {
                 var noteExist = await Collaborator.AsQueryable().Where(x => x.Email == email.Email).FirstOrDefaultAsync();
-                if (noteExist != null)
+                if (noteExist == null)
                 {
                     await Collaborator.InsertOneAsync(email);
                     return "Collaborator Added Successfully";
                 }
-                return "Collaborator not Added";
+                return "Collaborator Already Exist";
             }
             catch (ArgumentNullException ex)
             {
@@ -39,14 +45,14 @@ namespace FundooRepository.Repository
             }
         }
 
-        public async Task<string> DeleteEmail(CollaboratorModel email)
+        public async Task<string> DeleteEmail(string email)
         {
             try
             {
-                var noteExist = await Collaborator.AsQueryable().Where(x => x.Email == email.Email).FirstOrDefaultAsync();
+                var noteExist = await Collaborator.AsQueryable().Where(x => x.Email == email).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    await Collaborator.DeleteOneAsync(x => x.Email == email.Email);
+                    await Collaborator.DeleteOneAsync(x => x.Email == email);
                     return "Collaborator Deleted Successfully";
                 }
                 return "Collaborator not Found";

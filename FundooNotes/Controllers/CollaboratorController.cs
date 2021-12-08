@@ -1,10 +1,15 @@
-﻿using FundooManager.Interface;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "CollaboratorController.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooManager.Interface;
 using FundooModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -43,7 +48,7 @@ namespace FundooNotes.Controllers
 
         [HttpDelete]
         [Route("deleteemail")]
-        public async Task<IActionResult> DeleteEmail([FromBody] CollaboratorModel email)
+        public async Task<IActionResult> DeleteEmail(string email)
         {
             try
             {

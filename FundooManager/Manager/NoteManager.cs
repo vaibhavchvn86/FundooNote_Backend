@@ -1,10 +1,16 @@
-﻿using FundooManager.Interface;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "NoteManager.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooManager.Interface;
 using FundooModels;
 using FundooRepository.Interface;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooManager.Manager
@@ -39,55 +45,55 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> AddReminder(NoteModel note)
+        public async Task<string> AddReminder(string NoteID, string Reminder)
         {
             try
             {
-                return await this.NoteRepository.AddReminder(note);
+                return await this.NoteRepository.AddReminder(NoteID, Reminder);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> RemoveReminder(NoteModel note)
+        public async Task<string> RemoveReminder(string NoteID)
         {
             try
             {
-                return await this.NoteRepository.RemoveReminder(note);
+                return await this.NoteRepository.RemoveReminder(NoteID);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> PinnedUnPinned(NoteModel note)
+        public async Task<string> PinnedUnPinned(string NoteID)
         {
             try
             {
-                return await this.NoteRepository.PinnedUnPinned(note);
+                return await this.NoteRepository.PinnedUnPinned(NoteID);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> ArchiveUnArchive(NoteModel note)
+        public async Task<string> ArchiveUnArchive(string NoteID)
         {
             try
             {
-                return await this.NoteRepository.ArchiveUnArchive(note);
+                return await this.NoteRepository.ArchiveUnArchive(NoteID);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> EditColor(NoteModel note)
+        public async Task<string> EditColor(string NoteID, string color)
         {
             try
             {
-                return await this.NoteRepository.EditColor(note);
+                return await this.NoteRepository.EditColor(NoteID, color);
             }
             catch (Exception ex)
             {
@@ -105,45 +111,33 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Trash(NoteModel note)
+        public async Task<string> Trash(string noteID)
         {
             try
             {
-                return await this.NoteRepository.Trash(note);
+                return await this.NoteRepository.Trash(noteID);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Restore(NoteModel note)
+        public async Task<string> Restore(string noteID)
         {
             try
             {
-                return await this.NoteRepository.Restore(note);
+                return await this.NoteRepository.Restore(noteID);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> DeleteForever(NoteModel note)
+        public async Task<string> DeleteForever(string noteID)
         {
             try
             {
-                return await this.NoteRepository.DeleteForever(note);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public IEnumerable<NoteModel> GetNotes(string userId)
-        {
-            try
-            {
-                return this.NoteRepository.GetNotes(userId);
+                return await this.NoteRepository.DeleteForever(noteID);
             }
             catch (Exception ex)
             {
@@ -151,11 +145,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<NoteModel> GetArchive(string userId)
+        public IEnumerable<NoteModel> GetNotes()
         {
             try
             {
-                return this.NoteRepository.GetArchive(userId);
+                return this.NoteRepository.GetNotes();
             }
             catch (Exception ex)
             {
@@ -163,11 +157,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<NoteModel> GetTrash(string userId)
+        public IEnumerable<NoteModel> GetArchive()
         {
             try
             {
-                return this.NoteRepository.GetTrash(userId);
+                return this.NoteRepository.GetArchive();
             }
             catch (Exception ex)
             {
@@ -175,11 +169,11 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<NoteModel> GetReminder(string userId)
+        public IEnumerable<NoteModel> GetTrash()
         {
             try
             {
-                return this.NoteRepository.GetReminder(userId);
+                return this.NoteRepository.GetTrash();
             }
             catch (Exception ex)
             {
@@ -187,5 +181,16 @@ namespace FundooManager.Manager
             }
         }
 
+        public IEnumerable<NoteModel> GetReminder()
+        {
+            try
+            {
+                return this.NoteRepository.GetReminder();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

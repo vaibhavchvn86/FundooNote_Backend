@@ -1,4 +1,11 @@
-﻿using CloudinaryDotNet;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "NoteRepository.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using FundooModels;
 using FundooRepository.Interface;
@@ -8,7 +15,6 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooRepository.Repository
@@ -58,15 +64,15 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> AddReminder(NoteModel note)
+        public async Task<string> AddReminder(string NoteID, string Reminder)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Reminder, note.Reminder));
+                    await Note.UpdateOneAsync(x => x.NoteID == NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Reminder, Reminder));
                     return "Reminder Added Successfully";
                 }
                 return "Reminder not Added";
@@ -76,14 +82,14 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> RemoveReminder(NoteModel note)
+        public async Task<string> RemoveReminder(string NoteID)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    await Note.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                    await Note.DeleteOneAsync(x => x.NoteID == NoteID);
                     return "Reminder Deleted Successfully";
                 }
                 return "Reminder not edited";
@@ -94,24 +100,24 @@ namespace FundooRepository.Repository
             }
         }
 
-        public async Task<string> PinnedUnPinned(NoteModel note)
+        public async Task<string> PinnedUnPinned(string NoteID)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Pinned.Equals(false))
                     {
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, false));
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, true));
                         return "Note Pinned";
                     }
                     if (noteExist.Pinned.Equals(true))
                     {
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, false));
                         return "Note UnPinned";
                     }
@@ -123,24 +129,24 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> ArchiveUnArchive(NoteModel note)
+        public async Task<string> ArchiveUnArchive(string NoteID)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Archive.Equals(false))
                     {
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, false));
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, true));
                         return "Note Archived";
                     }
                     if (noteExist.Archive.Equals(true))
                     {
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, false));
                         return "Note UnArchived";
                     }
@@ -152,15 +158,15 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> EditColor(NoteModel note)
+        public async Task<string> EditColor(string NoteID, string color)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
-                        Builders<NoteModel>.Update.Set(x => x.Color, note.Color));
+                    await Note.UpdateOneAsync(x => x.NoteID == NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Color, color));
                     return "Color Changed Successfully";
                 }
                 return "Color not Changed";
@@ -197,16 +203,16 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Trash(NoteModel note)
+        public async Task<string> Trash(string NoteID)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Trash.Equals(false))
                     {
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, true));
                         return "Note Trashed";
                     }
@@ -218,16 +224,16 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> Restore(NoteModel note)
+        public async Task<string> Restore(string NoteID)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Trash.Equals(true))
                     {
-                        await Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
+                        await Note.UpdateOneAsync(x => x.NoteID == NoteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, false));
                         return "Note Restored";
                     }
@@ -239,16 +245,16 @@ namespace FundooRepository.Repository
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> DeleteForever(NoteModel note)
+        public async Task<string> DeleteForever(string NoteID)
         {
             try
             {
-                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == note.NoteID).FirstOrDefaultAsync();
+                var noteExist = await Note.AsQueryable().Where(x => x.NoteID == NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
                     if (noteExist.Trash.Equals(true))
                     {
-                        await Note.DeleteOneAsync(x => x.NoteID == note.NoteID);
+                        await Note.DeleteOneAsync(x => x.NoteID == NoteID);
                         return "Note Deleted";
                     }
                     return "Note not deleted";
@@ -261,11 +267,11 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<NoteModel> GetNotes(string userId)
+        public IEnumerable<NoteModel> GetNotes()
         {
             try
             {
-                IEnumerable<NoteModel> note = Note.AsQueryable().Where(x => x.UserID == userId && x.Archive == false && x.Trash == false).ToList();
+                IEnumerable<NoteModel> note = Note.AsQueryable().ToList();
                 if (note != null)
                 {
                     return note;
@@ -278,11 +284,11 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<NoteModel> GetReminder(string userId)
+        public IEnumerable<NoteModel> GetReminder()
         {
             try
             {
-                IEnumerable<NoteModel> reminder = Note.AsQueryable().Where(x => x.UserID == userId && x.Reminder != null).ToList();
+                IEnumerable<NoteModel> reminder = Note.AsQueryable().Where(x => x.Reminder != null).ToList();
                 if (reminder != null)
                 {
                     return reminder;
@@ -295,11 +301,11 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<NoteModel> GetArchive(string userId)
+        public IEnumerable<NoteModel> GetArchive()
         {
             try
             {
-                IEnumerable<NoteModel> archive = Note.AsQueryable().Where(x => x.UserID == userId && x.Archive == true).ToList();
+                IEnumerable<NoteModel> archive = Note.AsQueryable().Where(x => x.Archive == true).ToList();
                 if (archive != null)
                 {
                     return archive;
@@ -312,11 +318,11 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<NoteModel> GetTrash(string userId)
+        public IEnumerable<NoteModel> GetTrash()
         {
             try
             {
-                IEnumerable<NoteModel> trash = Note.AsQueryable<NoteModel>().Where(x => x.UserID == userId && x.Trash == true).ToList();
+                IEnumerable<NoteModel> trash = Note.AsQueryable<NoteModel>().Where(x => x.Trash == true).ToList();
                 if (trash != null)
                 {
                     return trash;

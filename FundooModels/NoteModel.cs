@@ -1,11 +1,14 @@
-﻿using MongoDB.Bson;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "NoteModel.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace FundooModels
 {

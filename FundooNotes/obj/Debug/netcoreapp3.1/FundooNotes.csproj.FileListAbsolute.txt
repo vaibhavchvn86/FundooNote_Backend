@@ -161,3 +161,7 @@ D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\obj\Debug\netcoreapp3.1\Fund
 D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\obj\Debug\netcoreapp3.1\FundooNotes.dll
 D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\obj\Debug\netcoreapp3.1\FundooNotes.pdb
 D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\obj\Debug\netcoreapp3.1\FundooNotes.genruntimeconfig.cache
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\NLog.config
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\NLog.dll
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\NLog.Extensions.Logging.dll
+D:\Visual Studio 2019\repos\FundooNotes\FundooNotes\bin\Debug\netcoreapp3.1\NLog.Web.AspNetCore.dll

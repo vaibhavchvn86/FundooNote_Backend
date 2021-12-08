@@ -1,14 +1,14 @@
-﻿using FundooManager.Interface;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file = "UserManager.cs" Company = "BridgeLabz">
+//   Copyright © 2021 Company="BridgeLabz"
+// </copyright>
+// <Creator Name = "Vaibhav Chavan"/>
+// --------------------------------------------------------------------------------------------------------------------
+
+using FundooManager.Interface;
 using FundooModels;
 using FundooRepository.Interface;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooManager.Manager
@@ -35,12 +35,12 @@ namespace FundooManager.Manager
             }
         }
 
-        public async Task<string> Login(LoginModel logindetails)
+        public async Task<string> Login(string email, string password)
         {
-            logindetails.Password = EncodePasswordToBase64(logindetails.Password);
+            password = EncodePasswordToBase64(password);
             try
             {
-                return await this.repository.Login(logindetails);
+                return await this.repository.Login(email, password);
             }
             catch(Exception ex)
             {
@@ -48,7 +48,7 @@ namespace FundooManager.Manager
             }
         }
 
-        public async Task<string> ForgetPassword(ForgetModel Email)
+        public async Task<string> ForgetPassword(string Email)
         {
             try
             {
