@@ -5,29 +5,44 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooModels;
-using FundooRepository.Interface;
-using MongoDB.Driver;
-using System;
-using MongoDB.Driver.Linq;
-using Microsoft.Extensions.Configuration;
-using System.Text;
-using System.Net.Mail;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using Experimental.System.Messaging;
-using System.Threading.Tasks;
-using StackExchange.Redis;
-
 namespace FundooRepository.Repository
 {
+    using System;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Net.Mail;
+    using System.Security.Claims;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Experimental.System.Messaging;
+    using FundooModels;
+    using FundooRepository.Interface;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
+    using MongoDB.Driver;
+    using MongoDB.Driver.Linq;
+    using StackExchange.Redis;
+
+    /// <summary>
+    /// UserRepository class
+    /// </summary>
+    /// <seealso cref="FundooRepository.Interface.IUserRepository" />
     public class UserRepository : IUserRepository
     {
+        /// <summary>
+        /// The user
+        /// </summary>
         private readonly IMongoCollection<RegisterModel> User;
+        /// <summary>
+        /// The configuration
+        /// </summary>
         private readonly IConfiguration configuration;
 
-       public UserRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRepository"/> class.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="configuration">The configuration.</param>
+        public UserRepository(IFundooDatabaseSettings settings, IConfiguration configuration)
         {
             this.configuration = configuration;
             var client = new MongoClient(settings.ConnectionString);
@@ -36,46 +51,61 @@ namespace FundooRepository.Repository
             User = database.GetCollection<RegisterModel>("User");
         }
 
+        /// <summary>
+        /// Registers the specified user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>Register Successful</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> Register(RegisterModel user)
         {
             try
             {
-                var ifExist = await User.AsQueryable().SingleOrDefaultAsync(e => e.Email == user.Email);
+                var ifExist = await this.User.AsQueryable().SingleOrDefaultAsync(e => e.Email == user.Email);
                 if (ifExist == null)
                 {
-                    await User.InsertOneAsync(user);
+                    await this.User.InsertOneAsync(user);
                     return "Register Successful";
                 }
+
                 return "Email Already Exist";
             }
-            catch(ArgumentNullException ex)
+            catch (ArgumentNullException ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
+        /// <summary>
+        /// Logins the specified email.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>Login Successful</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> Login(string email, string password)
         {
             try
             {
-                var EmailExist = await User.AsQueryable().Where(x => (x.Email == email)).FirstOrDefaultAsync();
-                if (EmailExist != null)
+                var emailExist = await this.User.AsQueryable().Where(x => (x.Email == email)).FirstOrDefaultAsync();
+                if (emailExist != null)
                 {
-                    var PasswordExist = await User.AsQueryable().Where(x => x.Password == password).FirstOrDefaultAsync();
-                    if (PasswordExist != null)
+                    var passwordExist = await this.User.AsQueryable().Where(x => x.Password == password).FirstOrDefaultAsync();
+                    if (passwordExist != null)
                     {
-                       
                         ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                         IDatabase database = connectionMultiplexer.GetDatabase();
-                        database.StringSet(key: "First Name", PasswordExist.FirstName);
-                        database.StringSet(key: "Last Name", PasswordExist.LastName);
-                        database.StringSet(key: "Email", PasswordExist.Email);
-                        database.StringSet(key: "UserId", PasswordExist.UserID);
+                        database.StringSet(key: "First Name", passwordExist.FirstName);
+                        database.StringSet(key: "Last Name", passwordExist.LastName);
+                        database.StringSet(key: "Email", passwordExist.Email);
+                        database.StringSet(key: "UserId", passwordExist.UserID);
                                    
                         return "Login Successful";
                     }
+
                     return "Enter valid Password";
                 }
+
                 return "Enter valid Email";
             }
             catch (Exception ex)
@@ -84,22 +114,27 @@ namespace FundooRepository.Repository
             }
         }
 
-        public async Task<string> ForgetPassword(string MYEmail)
+        /// <summary>
+        /// Forgets the password.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>Reset Link send to Your Email</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> ForgetPassword(string email)
         {
-            
             try
             {
-                var EmailExist = await User.AsQueryable().Where(x => x.Email == MYEmail).FirstOrDefaultAsync();
-                if (EmailExist != null)
+                var emailExist = await this.User.AsQueryable().Where(x => x.Email == email).FirstOrDefaultAsync();
+                if (emailExist != null)
                 {
                     MailMessage mail = new MailMessage();
                     SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
 
                     mail.From = new MailAddress(this.configuration["Credentials:Email"]);
-                    mail.To.Add(MYEmail);
+                    mail.To.Add(email);
                     mail.Subject = "Reset Password for FundooNotes";
-                    SendMSMQ();
-                    mail.Body = ReceiveMSMQ();
+                    this.SendMSMQ();
+                    mail.Body = this.ReceiveMSMQ();
 
                     SmtpServer.Host = "smtp.gmail.com";
                     SmtpServer.Port = 587;
@@ -109,6 +144,7 @@ namespace FundooRepository.Repository
 
                     return "Reset Link send to Your Email";
                 }
+
                 return "Email does not exist";
             }
             catch (ArgumentNullException ex)
@@ -117,6 +153,9 @@ namespace FundooRepository.Repository
             }
         }
 
+        /// <summary>
+        /// Sends the MSMQ.
+        /// </summary>
         public void SendMSMQ()
         {
             MessageQueue msgqueue;
@@ -128,12 +167,17 @@ namespace FundooRepository.Repository
             {
                 msgqueue = MessageQueue.Create(@".\Private$\Fundoo");
             }
+
             msgqueue.Formatter = new XmlMessageFormatter(new Type[] { typeof(string) });
             string body = "This is Password reset link. Reset Link =>";
             msgqueue.Label = "Mail Body";
             msgqueue.Send(body);
         }
 
+        /// <summary>
+        /// Receives the MSMQ.
+        /// </summary>
+        /// <returns>Message</returns>
         public string ReceiveMSMQ()
         {
             MessageQueue msgqueue = new MessageQueue(@".\Private$\Fundoo");
@@ -142,18 +186,24 @@ namespace FundooRepository.Repository
             return receivemessage.Body.ToString();
         }
 
-        public async Task<string> ResetPassword(ResetModel newpassword)
+        /// <summary>
+        /// Resets the password.
+        /// </summary>
+        /// <param name="newpassword">The newpassword.</param>
+        /// <returns>Reset Password Successful</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> ResetPassword(ResetModel password)
         {
             try
             {
-                var EmailExist = await User.AsQueryable().Where(x => x.Email == newpassword.Email).FirstOrDefaultAsync();
-                if (EmailExist != null)
+                var emailExist = await this.User.AsQueryable().Where(x => x.Email == password.Email).FirstOrDefaultAsync();
+                if (emailExist != null)
                 {
-                        EmailExist.Password = newpassword.Password;
-                        await User.UpdateOneAsync(x => x.Email == newpassword.Email,
-                            Builders<RegisterModel>.Update.Set(x => x.Password, newpassword.Password));
+                        await User.UpdateOneAsync(x => x.Email == password.Email,
+                            Builders<RegisterModel>.Update.Set(x => x.Password, password.Password));
                         return "Reset Password Successful";
                 }
+
                 return "Enter valid Email";
             }
             catch (Exception ex)
@@ -162,14 +212,19 @@ namespace FundooRepository.Repository
             }
         }
 
+        /// <summary>
+        /// Generates the token.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>Unique token</returns>
         public string GenerateToken(string email)
         {
             byte[] key = Encoding.UTF8.GetBytes(this.configuration["SecretKey"]);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] {
-                      new Claim(ClaimTypes.Email, email)}),
+                Subject = new ClaimsIdentity(new[]
+                      { new Claim(ClaimTypes.Email, email) }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(securityKey,
                 SecurityAlgorithms.HmacSha256Signature)

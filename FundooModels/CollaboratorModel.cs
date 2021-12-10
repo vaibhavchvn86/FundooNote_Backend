@@ -5,16 +5,15 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace FundooModels
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
+
     public class CollaboratorModel
     {
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string CollaboratorId { get; set; }
@@ -28,6 +27,5 @@ namespace FundooModels
 
         [RegularExpression("^[a-zA-Z0-9]+([.#_$+-][a-zA-Z0-9]+)*[@][a-zA-Z0-9]+[.][a-zA-Z]{2,3}([.][a-zA-Z]{2})?$", ErrorMessage = "Email is not valid. Please Enter valid email")]
         public string DeleteEmail { get; set; }
-
     }
 }

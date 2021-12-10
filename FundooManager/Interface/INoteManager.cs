@@ -5,30 +5,43 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooModels;
-using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace FundooManager.Interface
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooModels;
+    using Microsoft.AspNetCore.Http;
+
     public interface INoteManager
     {
         Task<string> AddNote(NoteModel note);
-        Task<string> EditNote(NoteModel note);
-        Task<string> AddReminder(string NoteID, string Reminder);
-        Task<string> RemoveReminder(string NoteID);
-        Task<string> PinnedUnPinned(string NoteID);
-        Task<string> ArchiveUnArchive(string NoteID);
-        Task<string> EditColor(string NoteID, string color);
-        Task<string> ImageUpload(string noteID, IFormFile image);
-        Task<string> Trash(string NoteID);
-        Task<string> Restore(string NoteID);
-        Task<string> DeleteForever(string NoteID);
-        IEnumerable<NoteModel> GetNotes();
-        IEnumerable<NoteModel> GetReminder();
-        IEnumerable<NoteModel> GetArchive();
-        IEnumerable<NoteModel> GetTrash();
 
+        Task<string> EditNote(NoteModel note);
+
+        Task<string> AddReminder(string noteID, string reminder);
+
+        Task<string> RemoveReminder(string noteID);
+
+        Task<string> PinnedUnPinned(string noteID);
+
+        Task<string> ArchiveUnArchive(string noteID);
+
+        Task<string> EditColor(string noteID, string color);
+
+        Task<string> ImageUpload(string noteID, IFormFile image);
+
+        Task<string> Trash(string noteID);
+
+        Task<string> Restore(string noteID);
+
+        Task<string> DeleteForever(string noteID);
+
+        IEnumerable<NoteModel> GetNotes();
+
+        IEnumerable<NoteModel> GetReminder();
+
+        IEnumerable<NoteModel> GetArchive();
+
+        IEnumerable<NoteModel> GetTrash();
     }
 }

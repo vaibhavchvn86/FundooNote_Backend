@@ -1,24 +1,35 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file = "CollaboratorRepository.cs" Company = "BridgeLabz">
-//   Copyright © 2021 Company="BridgeLabz"
+//   Copyright © 2021 Company = "BridgeLabz"
 // </copyright>
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooModels;
-using FundooRepository.Interface;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace FundooRepository.Repository
 {
-    public class CollaboratorRepository: ICollaboratorRepository
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooModels;
+    using FundooRepository.Interface;
+    using MongoDB.Driver;
+    using MongoDB.Driver.Linq;
+
+    /// <summary>
+    /// CollaboratorRepository class
+    /// </summary>
+    /// <seealso cref="FundooRepository.Interface.ICollaboratorRepository" />
+    public class CollaboratorRepository : ICollaboratorRepository
     {
+        /// <summary>
+        /// The collaborator
+        /// </summary>
         private readonly IMongoCollection<CollaboratorModel> Collaborator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollaboratorRepository"/> class.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
         public CollaboratorRepository(IFundooDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
@@ -27,17 +38,30 @@ namespace FundooRepository.Repository
             Collaborator = database.GetCollection<CollaboratorModel>("Collaborator");
         }
 
-        public async Task<string> AddEmail(CollaboratorModel email)
+        /// <summary>
+        /// Adds the email.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>Collaborator Added Successfully</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> AddEmail(CollaboratorModel collaborator)
         {
             try
             {
-                var noteExist = await Collaborator.AsQueryable().Where(x => x.Email == email.Email).FirstOrDefaultAsync();
-                if (noteExist == null)
+                var noteExist = await this.Collaborator.AsQueryable().Where(x => x.NoteId == collaborator.NoteId).SingleOrDefaultAsync();
+                if (noteExist != null)
                 {
-                    await Collaborator.InsertOneAsync(email);
-                    return "Collaborator Added Successfully";
+                    var emailExist = await this.Collaborator.AsQueryable().Where(x => x.Email == collaborator.Email).FirstOrDefaultAsync();
+                    if (emailExist == null)
+                    {
+                        await Collaborator.InsertOneAsync(collaborator);
+                        return "Collaborator Added Successfully";
+                    }
+
+                    return "Collaborator Already Exist";
                 }
-                return "Collaborator Already Exist";
+
+                return "Note not Found";
             }
             catch (ArgumentNullException ex)
             {
@@ -45,16 +69,23 @@ namespace FundooRepository.Repository
             }
         }
 
-        public async Task<string> DeleteEmail(string email)
+        /// <summary>
+        /// Deletes the email.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>Collaborator Deleted Successfully</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> DeleteEmail(string Id)
         {
             try
             {
-                var noteExist = await Collaborator.AsQueryable().Where(x => x.Email == email).FirstOrDefaultAsync();
+                var noteExist = await this.Collaborator.AsQueryable().Where(x => x.CollaboratorId == Id).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    await Collaborator.DeleteOneAsync(x => x.Email == email);
+                    await Collaborator.DeleteOneAsync(x => x.CollaboratorId == Id);
                     return "Collaborator Deleted Successfully";
                 }
+
                 return "Collaborator not Found";
             }
             catch (ArgumentNullException ex)
@@ -63,15 +94,22 @@ namespace FundooRepository.Repository
             }
         }
 
-        public IEnumerable<CollaboratorModel> GetCollaborators(string noteId)
+        /// <summary>
+        /// Gets the collaborators.
+        /// </summary>
+        /// <param name="noteId">The note identifier.</param>
+        /// <returns>All collaborators</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public IEnumerable<CollaboratorModel> GetCollaborators()
         {
             try
             {
-                IEnumerable<CollaboratorModel> collaborator = Collaborator.AsQueryable().Where(x => x.NoteId == noteId).ToList();
+                IEnumerable<CollaboratorModel> collaborator = this.Collaborator.AsQueryable().ToList();
                 if (collaborator != null)
                 {
                     return collaborator;
                 }
+
                 return null;
             }
             catch (ArgumentNullException ex)

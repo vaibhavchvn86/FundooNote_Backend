@@ -5,25 +5,42 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooManager.Interface;
-using FundooModels;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace FundooNotes.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooManager.Interface;
+    using FundooModels;
+    using Microsoft.AspNetCore.Mvc;
+
+    /// <summary>
+    /// LabelController class
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [ApiController]
     [Route("api/[controller]")]
     public class LabelController : ControllerBase
     {
+        /// <summary>
+        /// The manager
+        /// </summary>
         private readonly ILabelManager manager;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabelController"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
         public LabelController(ILabelManager manager)
         {
             this.manager = manager;
         }
 
+        /// <summary>
+        /// Creates the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
         [HttpPost]
         [Route("createlabel")]
         public async Task<IActionResult> CreateLabel([FromBody] LabelModel label)
@@ -46,13 +63,19 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Edits the label.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
         [HttpPut]
         [Route("editlabel")]
-        public async Task<IActionResult> EditLabel(string LabelID, string label)
+        public async Task<IActionResult> EditLabel(string labelID, string label)
         {
             try
             {
-                string message = await this.manager.EditLabel(LabelID, label);
+                string message = await this.manager.EditLabel(labelID, label);
                 if (message.Equals("Label Edited Successfully"))
                 {
                     return this.Ok(new { Status = true, Message = message });
@@ -68,6 +91,11 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
         [HttpPut]
         [Route("addlabel")]
         public async Task<IActionResult> AddLabel([FromBody] LabelModel label)
@@ -90,6 +118,11 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Removes the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
         [HttpPut]
         [Route("removelabel")]
         public async Task<IActionResult> RemoveLabel(string label)
@@ -112,6 +145,11 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
         [HttpDelete]
         [Route("deletelabel")]
         public async Task<IActionResult> DeleteLabel(string label)
@@ -134,6 +172,10 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <returns>Response from this API</returns>
         [HttpGet]
         [Route("getlabel")]
         public IActionResult GetLabel()
@@ -156,6 +198,11 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the label by note identifier.
+        /// </summary>
+        /// <param name="noteId">The note identifier.</param>
+        /// <returns>Response from this API</returns>
         [HttpGet]
         [Route("getlabelbynoteid")]
         public IActionResult GetLabelByNoteId(string noteId)
@@ -178,13 +225,18 @@ namespace FundooNotes.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the note by label identifier.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns>Response from this API</returns>
         [HttpGet]
         [Route("getnotebylabelid")]
-        public IActionResult GetNoteByLabelId(string LabelID)
+        public IActionResult GetNoteByLabelId(string labelID)
         {
             try
             {
-                IEnumerable<LabelModel> label = this.manager.GetNoteByLabelId(LabelID);
+                IEnumerable<LabelModel> label = this.manager.GetNoteByLabelId(labelID);
                 if (label != null)
                 {
                     return this.Ok(new { Status = true, Message = "All Note Retrieved by Label SuccessFully", Data = label });

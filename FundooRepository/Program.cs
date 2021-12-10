@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace FundooRepository
+﻿namespace FundooRepository
 {
+    using System;
+
     class Program
     {
         static void Main(string[] args)

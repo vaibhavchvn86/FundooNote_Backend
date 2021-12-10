@@ -5,12 +5,12 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace FundooModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public class FundooDatabaseSetting : IFundooDatabaseSettings
     {
         public string ConnectionString { get; set; }
@@ -21,6 +21,5 @@ namespace FundooModels
     {
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
-        
     }
 }

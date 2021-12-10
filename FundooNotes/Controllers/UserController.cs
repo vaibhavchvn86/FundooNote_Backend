@@ -1,32 +1,53 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file = "UserController.cs" Company = "BridgeLabz">
-//   Copyright © 2021 Company="BridgeLabz"
+//   Copyright © 2021 Company = "BridgeLabz"
 // </copyright>
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooManager.Interface;
-using FundooModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
-using System;
-using System.Threading.Tasks;
-
 namespace FundooNotes.Controllers
 {
+    using System;
+    using System.Threading.Tasks;
+    using FundooManager.Interface;
+    using FundooModels;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using StackExchange.Redis;
+
+    /// <summary>
+    /// Controller class
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.Mvc.ControllerBase" />
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
+        /// <summary>
+        /// The manager
+        /// </summary>
         private readonly IUserManager manager;
+        /// <summary>
+        /// The logger
+        /// </summary>
         private readonly ILogger<UserController> logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserController"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
+        /// <param name="logger">The logger.</param>
         public UserController(IUserManager manager, ILogger<UserController> logger)
         {
             this.manager = manager;
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Registers the specified user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>Response from this API</returns>
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel user)
@@ -49,18 +70,24 @@ namespace FundooNotes.Controllers
             catch (Exception ex)
             {
                 this.logger.LogInformation(user.FirstName + " has an Exception in Register");
-                return this.NotFound(new {Status = false, Message = ex.Message });
+                return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
 
+        /// <summary>
+        /// Logins the specified my email.
+        /// </summary>
+        /// <param name="myEmail">My email.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>Response from this API</returns>
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(string Email, string password)
+        public async Task<IActionResult> Login(string myEmail, string password)
         {
             try
             {
-                this.logger.LogInformation(Email + " is trying to Login");
-                string message = await this.manager.Login(Email, password);
+                this.logger.LogInformation(myEmail + " is trying to Login");
+                string message = await this.manager.Login(myEmail, password);
                 if (message.Equals("Login Successful"))
                 {
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
@@ -77,23 +104,28 @@ namespace FundooNotes.Controllers
                         UserID = userId,
                         Email = email
                     };
-                    string token = this.manager.GenerateToken(Email);
-                    this.logger.LogInformation(Email + " has Login Successfully");
-                    return this.Ok(new { Status = true, Message = message, Data=data, Token =token});
+                    string token = this.manager.GenerateToken(myEmail);
+                    this.logger.LogInformation(myEmail + " has Login Successfully");
+                    return this.Ok(new { Status = true, Message = message, Data = data, Token = token });
                 }
                 else
                 {
-                    this.logger.LogInformation(Email + " is not Logged in");
+                    this.logger.LogInformation(myEmail + " is not Logged in");
                     return this.BadRequest(new { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogInformation(Email + " has an Exception in Logged");
+                this.logger.LogInformation(myEmail + " has an Exception in Logged");
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
 
+        /// <summary>
+        /// Forgets the specified email.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>Response from this API</returns>
         [HttpPost]
         [Route("forget")]
         public async Task<IActionResult> Forget(string email)
@@ -106,7 +138,6 @@ namespace FundooNotes.Controllers
                 {
                     this.logger.LogInformation(email + " has sent Link successfully");
                     return this.Ok(new { Status = true, Message = message });
-
                 }
                 else
                 {
@@ -120,6 +151,12 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { Status = false, ex.Message });
             }
         }
+
+        /// <summary>
+        /// Resets the specified newpassword.
+        /// </summary>
+        /// <param name="newpassword">The newpassword.</param>
+        /// <returns>Response from this API</returns>
         [HttpPost]
         [Route("reset")]
         public async Task<IActionResult> Reset([FromBody] ResetModel newpassword)

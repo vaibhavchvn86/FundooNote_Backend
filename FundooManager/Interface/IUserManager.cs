@@ -5,18 +5,21 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooModels;
-using System.Threading.Tasks;
-
 namespace FundooManager.Interface
 {
+    using System.Threading.Tasks;
+    using FundooModels;
+
     public interface IUserManager
     {
         Task<string> Register(RegisterModel user);
-        Task<string> Login(string email, string password);
-        Task<string> ForgetPassword(string email);
-        Task<string> ResetPassword(ResetModel newpassword);
-        string GenerateToken(string email);
 
+        Task<string> Login(string email, string password);
+
+        Task<string> ForgetPassword(string email);
+
+        Task<string> ResetPassword(ResetModel newpassword);
+
+        string GenerateToken(string email);
     }
 }

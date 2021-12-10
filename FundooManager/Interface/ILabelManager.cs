@@ -5,21 +5,29 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace FundooManager.Interface
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooModels;
+
     public interface ILabelManager
     {
         Task<string> CreateLabel(LabelModel label);
-        Task<string> EditLabel(string LabelID, string label);
+
+        Task<string> EditLabel(string labelID, string label);
+
         Task<string> AddLabel(LabelModel label);
-        Task<string> RemoveLabel(string LabelID);
-        Task<string> DeleteLabel(string LabelID);
+
+        Task<string> RemoveLabel(string labelID);
+
+        Task<string> DeleteLabel(string labelID);
+
         IEnumerable<LabelModel> GetLabel();
-        IEnumerable<LabelModel> GetLabelByNoteId(string NoteId);
-        IEnumerable<LabelModel> GetNoteByLabelId(string LabelID);
+
+        IEnumerable<LabelModel> GetLabelByNoteId(string noteId);
+
+        IEnumerable<LabelModel> GetNoteByLabelId(string labelID);
     }
 }

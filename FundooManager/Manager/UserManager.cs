@@ -5,23 +5,40 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooManager.Interface;
-using FundooModels;
-using FundooRepository.Interface;
-using System;
-using System.Threading.Tasks;
-
 namespace FundooManager.Manager
 {
+    using System;
+    using System.Threading.Tasks;
+    using FundooManager.Interface;
+    using FundooModels;
+    using FundooRepository.Interface;
+
+    /// <summary>
+    /// UserManager class
+    /// </summary>
+    /// <seealso cref="FundooManager.Interface.IUserManager" />
     public class UserManager : IUserManager
     {
+        /// <summary>
+        /// The repository
+        /// </summary>
         private readonly IUserRepository repository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserManager"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
         public UserManager(IUserRepository repository)
         {
             this.repository = repository;
         }
 
+        /// <summary>
+        /// Registers the specified user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> Register(RegisterModel user)
         {
             user.Password = EncodePasswordToBase64(user.Password);
@@ -35,6 +52,13 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Logins the specified email.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <param name="password">The password.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> Login(string email, string password)
         {
             password = EncodePasswordToBase64(password);
@@ -48,6 +72,12 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Forgets the password.
+        /// </summary>
+        /// <param name="Email">The email.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> ForgetPassword(string Email)
         {
             try
@@ -60,6 +90,12 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Resets the password.
+        /// </summary>
+        /// <param name="newpassword">The newpassword.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> ResetPassword(ResetModel newpassword)
         {
             newpassword.Password = EncodePasswordToBase64(newpassword.Password);
@@ -73,6 +109,12 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Encodes the password to base64.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public static string EncodePasswordToBase64(string password)
         {
             try
@@ -88,6 +130,12 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Generates the token.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public string GenerateToken(string email)
         {
             try
@@ -99,6 +147,5 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }

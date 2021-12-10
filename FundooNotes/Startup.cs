@@ -5,24 +5,24 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooManager.Interface;
-using FundooManager.Manager;
-using FundooModels;
-using FundooRepository.Interface;
-using FundooRepository.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
-
 namespace FundooNotes
 {
+    using System.Text;
+    using FundooManager.Interface;
+    using FundooManager.Manager;
+    using FundooModels;
+    using FundooRepository.Interface;
+    using FundooRepository.Repository;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Options;
+    using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -37,7 +37,7 @@ namespace FundooNotes
         {
             services.AddMvc();
             services.Configure<FundooDatabaseSetting>(
-                Configuration.GetSection(nameof(FundooDatabaseSetting)));
+                this.Configuration.GetSection(nameof(FundooDatabaseSetting)));
 
             services.AddSingleton<IFundooDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<FundooDatabaseSetting>>().Value);
@@ -56,7 +56,7 @@ namespace FundooNotes
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundooNotes", Description="testing FundooNotes", Version = "1.0" });
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "FundooNotes", Description = "Testing FundooNotes", Version = "1.0" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -77,7 +77,7 @@ namespace FundooNotes
                                     Id = "Bearer"
                                 }
                             },
-                            new string[] {}
+                            new string[] { }
                     }
                 });
             });
@@ -86,7 +86,6 @@ namespace FundooNotes
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
             }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -95,12 +94,11 @@ namespace FundooNotes
                     ValidateAudience = false,
                     ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["SecretKey"])) //Configuration["JwtToken:SecretKey"]  
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["SecretKey"]))
                 };
             });
 
-
-            services.AddCors(options =>options.AddPolicy(name: "CorsPolicyAllHosts", builder =>
+            services.AddCors(options =>options.AddPolicy(name: "CorsPolicyAllHosts", builder=>
             { 
                     builder.AllowAnyOrigin()
                     .AllowAnyMethod()

@@ -5,23 +5,41 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooManager.Interface;
-using FundooModels;
-using FundooRepository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace FundooManager.Manager
 {
-    public class LabelManager: ILabelManager
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooManager.Interface;
+    using FundooModels;
+    using FundooRepository.Interface;
+
+    /// <summary>
+    /// LabelManager class
+    /// </summary>
+    /// <seealso cref="FundooManager.Interface.ILabelManager" />
+    public class LabelManager : ILabelManager
     {
+        /// <summary>
+        /// The label repository
+        /// </summary>
         private readonly ILabelRepository LabelRepository;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabelManager"/> class.
+        /// </summary>
+        /// <param name="LabelRepository">The label repository.</param>
         public LabelManager(ILabelRepository LabelRepository)
         {
             this.LabelRepository = LabelRepository;
         }
 
+        /// <summary>
+        /// Creates the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> CreateLabel(LabelModel label)
         {
             try
@@ -34,11 +52,18 @@ namespace FundooManager.Manager
             }
         }
 
-        public async Task<string> EditLabel(string LabelID, string label)
+        /// <summary>
+        /// Edits the label.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> EditLabel(string labelID, string label)
         {
             try
             {
-                return await this.LabelRepository.EditLabel(LabelID, label);
+                return await this.LabelRepository.EditLabel(labelID, label);
             }
             catch (Exception ex)
             {
@@ -46,6 +71,12 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Adds the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> AddLabel(LabelModel label)
         {
             try
@@ -57,11 +88,18 @@ namespace FundooManager.Manager
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<string> DeleteLabel(string LabelID)
+
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> DeleteLabel(string labelID)
         {
             try
             {
-                return await this.LabelRepository.DeleteLabel(LabelID);
+                return await this.LabelRepository.DeleteLabel(labelID);
             }
             catch (Exception ex)
             {
@@ -69,11 +107,17 @@ namespace FundooManager.Manager
             }
         }
 
-        public async Task<string> RemoveLabel(string LabelID)
+        /// <summary>
+        /// Removes the label.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public async Task<string> RemoveLabel(string labelID)
         {
             try
             {
-                return await this.LabelRepository.RemoveLabel(LabelID);
+                return await this.LabelRepository.RemoveLabel(labelID);
             }
             catch (Exception ex)
             {
@@ -81,6 +125,11 @@ namespace FundooManager.Manager
             }
         }
 
+        /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
         public IEnumerable<LabelModel> GetLabel()
         {
             try
@@ -93,11 +142,17 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<LabelModel> GetLabelByNoteId(string NoteId)
+        /// <summary>
+        /// Gets the label by note identifier.
+        /// </summary>
+        /// <param name="noteId">The note identifier.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public IEnumerable<LabelModel> GetLabelByNoteId(string noteId)
         {
             try
             {
-                return this.LabelRepository.GetLabelByNoteId(NoteId);
+                return this.LabelRepository.GetLabelByNoteId(noteId);
             }
             catch (Exception ex)
             {
@@ -105,11 +160,17 @@ namespace FundooManager.Manager
             }
         }
 
-        public IEnumerable<LabelModel> GetNoteByLabelId(string LabelID)
+        /// <summary>
+        /// Gets the note by label identifier.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns>Response from this API</returns>
+        /// <exception cref="System.Exception">System Exception Message</exception>
+        public IEnumerable<LabelModel> GetNoteByLabelId(string labelID)
         {
             try
             {
-                return this.LabelRepository.GetNoteByLabelId(LabelID);
+                return this.LabelRepository.GetNoteByLabelId(labelID);
             }
             catch (Exception ex)
             {

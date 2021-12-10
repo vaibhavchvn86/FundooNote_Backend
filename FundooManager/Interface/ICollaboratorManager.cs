@@ -5,17 +5,18 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using FundooModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace FundooManager.Interface
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using FundooModels;
+
     public interface ICollaboratorManager
     {
-        Task<string> AddEmail(CollaboratorModel email);
-        Task<string> DeleteEmail(string email);
-        IEnumerable<CollaboratorModel> GetCollaborators(string noteId);
+        Task<string> AddEmail(CollaboratorModel collaborator);
 
+        Task<string> DeleteEmail(string Id);
+
+        IEnumerable<CollaboratorModel> GetCollaborators();
     }
 }

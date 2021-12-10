@@ -5,12 +5,12 @@
 // <Creator Name = "Vaibhav Chavan"/>
 // --------------------------------------------------------------------------------------------------------------------
 
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace FundooModels
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
+
     public class LabelModel
     {
         [BsonId]
@@ -18,11 +18,12 @@ namespace FundooModels
         public string LabelID { get; set; }
 
         [ForeignKey("RegisterModel")]
-        public virtual RegisterModel RegisterModel { get; set; }
         public string UserID { get; set; }
+        public virtual RegisterModel RegisterModel { get; set; }
+
         [ForeignKey("NoteModel")]
         public virtual NoteModel NoteModel { get; set; }
-        public string? NoteID { get; set; }
+        public string NoteID { get; set; }
         public string Label { get; set; }
     }
 }
