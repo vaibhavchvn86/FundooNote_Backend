@@ -54,12 +54,12 @@ namespace FundooRepository.Repository
         /// <param name="note">The note.</param>
         /// <returns>Note Added Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddNote(NoteModel note)
+        public async Task<NoteModel> AddNote(NoteModel note)
         {
             try
             {
                 await this.Note.InsertOneAsync(note);
-                return "Note Added Successfully";
+                return note;
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace FundooRepository.Repository
         /// <param name="note">The note.</param>
         /// <returns>Note Updated Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> EditNote(NoteModel note)
+        public async Task<NoteModel> EditNote(NoteModel note)
         {
             try
             {
@@ -85,10 +85,10 @@ namespace FundooRepository.Repository
 
                     await this.Note.UpdateOneAsync(x => x.NoteID == note.NoteID,
                         Builders<NoteModel>.Update.Set(x => x.Description, note.Description));
-                    return "Note Updated Successfully";
+                    return noteExist;
                 }
 
-                return "Note does not exist";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -103,7 +103,7 @@ namespace FundooRepository.Repository
         /// <param name="reminder">The reminder.</param>
         /// <returns>Reminder Added Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddReminder(string noteID, string reminder)
+        public async Task<NoteModel> AddReminder(string noteID, string reminder)
         {
             try
             {
@@ -112,10 +112,10 @@ namespace FundooRepository.Repository
                 {
                     await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                         Builders<NoteModel>.Update.Set(x => x.Reminder, reminder));
-                    return "Reminder Added Successfully";
+                    return noteExist;
                 }
 
-                return "Reminder not Added";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -129,7 +129,7 @@ namespace FundooRepository.Repository
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Reminder Deleted Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> RemoveReminder(string noteID)
+        public async Task<NoteModel> RemoveReminder(string noteID)
         {
             try
             {
@@ -137,10 +137,10 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     await this.Note.DeleteOneAsync(x => x.NoteID == noteID);
-                    return "Reminder Deleted Successfully";
+                    return noteExist;
                 }
 
-                return "Reminder not edited";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -158,6 +158,7 @@ namespace FundooRepository.Repository
         {
             try
             {
+                string message;
                 var noteExist = await this.Note.AsQueryable().Where(x => x.NoteID == noteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
@@ -167,18 +168,19 @@ namespace FundooRepository.Repository
                             Builders<NoteModel>.Update.Set(x => x.Archive, false));
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, true));
-                        return "Note Pinned";
+                        message = "Note Pinned";
                     }
 
                     if (noteExist.Pinned.Equals(true))
                     {
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Pinned, false));
-                        return "Note UnPinned";
+                        message = "Note UnPinned";
                     }
                 }
 
-                return "Note Doesnot Exist";
+                message =  "Note Doesnot Exist";
+                return message;
             }
             catch (ArgumentNullException ex)
             {
@@ -196,6 +198,7 @@ namespace FundooRepository.Repository
         {
             try
             {
+                string message;
                 var noteExist = await this.Note.AsQueryable().Where(x => x.NoteID == noteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
@@ -205,18 +208,21 @@ namespace FundooRepository.Repository
                             Builders<NoteModel>.Update.Set(x => x.Pinned, false));
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, true));
-                        return "Note Archived";
+                        message = "Note Archived";
+                        return message;
                     }
 
                     if (noteExist.Archive.Equals(true))
                     {
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Archive, false));
-                        return "Note UnArchived";
+                        message = "Note UnArchived";
+                        return message;
                     }
                 }
 
-                return "Note Doesnot Exist";
+                message = "Note Doesnot Exist";
+                return message;
             }
             catch (ArgumentNullException ex)
             {
@@ -231,19 +237,19 @@ namespace FundooRepository.Repository
         /// <param name="color">The color.</param>
         /// <returns>Color Changed Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> EditColor(string noteID, string color)
+        public async Task<NoteModel> EditColor(NoteModel color)
         {
             try
             {
-                var noteExist = await this.Note.AsQueryable().Where(x => x.NoteID == noteID).FirstOrDefaultAsync();
+                var noteExist = await this.Note.AsQueryable().Where(x => x.NoteID == color.NoteID).FirstOrDefaultAsync();
                 if (noteExist != null)
                 {
-                    await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
-                        Builders<NoteModel>.Update.Set(x => x.Color, color));
-                    return "Color Changed Successfully";
+                    await this.Note.UpdateOneAsync(x => x.NoteID == color.NoteID,
+                        Builders<NoteModel>.Update.Set(x => x.Color, color.Color));
+                    return noteExist;
                 }
 
-                return "Color not Changed";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -258,7 +264,7 @@ namespace FundooRepository.Repository
         /// <param name="image">The image.</param>
         /// <returns>Image Uploaded Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> ImageUpload(string noteID, IFormFile image)
+        public async Task<NoteModel> ImageUpload(string noteID, IFormFile image)
         {
             try
             {
@@ -276,10 +282,10 @@ namespace FundooRepository.Repository
                     noteExists.Image = imagePath;
                     await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                         Builders<NoteModel>.Update.Set(x => x.Image, noteExists.Image));
-                    return "Image Uploaded Successfully";
+                    return noteExists;
                 }
 
-                return "Note Does not Exist";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -293,7 +299,7 @@ namespace FundooRepository.Repository
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Note Trashed</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Trash(string noteID)
+        public async Task<NoteModel> Trash(string noteID)
         {
             try
             {
@@ -306,11 +312,11 @@ namespace FundooRepository.Repository
                            Builders<NoteModel>.Update.Set(x => x.Pinned, false));
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, true));
-                        return "Note Trashed";
+                        return noteExist;
                     }
                 }
 
-                return "Note not Found";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -324,7 +330,7 @@ namespace FundooRepository.Repository
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Note Restored</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Restore(string noteID)
+        public async Task<NoteModel> Restore(string noteID)
         {
             try
             {
@@ -335,11 +341,11 @@ namespace FundooRepository.Repository
                     {
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, false));
-                        return "Note Restored";
+                        return noteExist;
                     }
                 }
 
-                return "Note not Found";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -353,7 +359,7 @@ namespace FundooRepository.Repository
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Note Deleted</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> DeleteForever(string noteID)
+        public async Task<bool> DeleteForever(string noteID)
         {
             try
             {
@@ -363,13 +369,13 @@ namespace FundooRepository.Repository
                     if (noteExist.Trash.Equals(true))
                     {
                         await this.Note.DeleteOneAsync(x => x.NoteID == noteID);
-                        return "Note Deleted";
+                        return true;
                     }
 
-                    return "Note not deleted";
+                    return false;
                 }
 
-                return "Note not Found";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -382,11 +388,11 @@ namespace FundooRepository.Repository
         /// </summary>
         /// <returns>All notes</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetNotes()
+        public IEnumerable<NoteModel> GetNotes(string userId)
         {
             try
             {
-                IEnumerable<NoteModel> note = this.Note.AsQueryable().ToList();
+                IEnumerable<NoteModel> note = this.Note.AsQueryable().Where(x => x.UserID == userId && x.Archive == false && x.Trash == false).ToList();
                 if (note != null)
                 {
                     return note;
@@ -405,7 +411,7 @@ namespace FundooRepository.Repository
         /// </summary>
         /// <returns>All Reminders</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetReminder()
+        public IEnumerable<NoteModel> GetReminder(string userId)
         {
             try
             {
@@ -428,11 +434,11 @@ namespace FundooRepository.Repository
         /// </summary>
         /// <returns>All Archive notes</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetArchive()
+        public IEnumerable<NoteModel> GetArchive(string userId)
         {
             try
             {
-                IEnumerable<NoteModel> archive = this.Note.AsQueryable().Where(x => x.Archive == true).ToList();
+                IEnumerable<NoteModel> archive = this.Note.AsQueryable().Where(x => x.Archive == true && x.Trash == false).ToList();
                 if (archive != null)
                 {
                     return archive;
@@ -451,7 +457,7 @@ namespace FundooRepository.Repository
         /// </summary>
         /// <returns>All trash notes</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetTrash()
+        public IEnumerable<NoteModel> GetTrash(string userId)
         {
             try
             {

@@ -14,34 +14,34 @@ namespace FundooRepository.Interface
 
     public interface INoteRepository
     {
-        Task<string> AddNote(NoteModel note);
+        Task<NoteModel> AddNote(NoteModel note);
 
-        Task<string> EditNote(NoteModel note);
+        Task<NoteModel> EditNote(NoteModel note);
 
-        Task<string> AddReminder(string noteID, string reminder);
+        Task<NoteModel> AddReminder(string noteID, string reminder);
 
-        Task<string> RemoveReminder(string noteID);
+        Task<NoteModel> RemoveReminder(string noteID);
 
         Task<string> PinnedUnPinned(string noteID);
 
         Task<string> ArchiveUnArchive(string noteID);
 
-        Task<string> EditColor(string noteID, string color);
+        Task<NoteModel> EditColor(NoteModel color);
 
-        Task<string> ImageUpload(string noteID, IFormFile image);
+        Task<NoteModel> ImageUpload(string noteID, IFormFile image);
 
-        Task<string> Trash(string noteID);
+        Task<NoteModel> Trash(string noteID);
 
-        Task<string> Restore(string noteID);
+        Task<NoteModel> Restore(string noteID);
 
-        Task<string> DeleteForever(string noteID);
+        Task<bool> DeleteForever(string noteID);
 
-        IEnumerable<NoteModel> GetNotes();
+        IEnumerable<NoteModel> GetNotes(string userId);
 
-        IEnumerable<NoteModel> GetReminder();
+        IEnumerable<NoteModel> GetReminder(string userId);
 
-        IEnumerable<NoteModel> GetArchive();
+        IEnumerable<NoteModel> GetArchive(string userId);
 
-        IEnumerable<NoteModel> GetTrash();
+        IEnumerable<NoteModel> GetTrash(string userId);
     }
 }

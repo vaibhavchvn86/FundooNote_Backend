@@ -223,3 +223,82 @@
 2021-12-21 08:34:20.7535|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
 2021-12-21 08:49:47.9737|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
 2021-12-21 08:49:48.8343|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-22 21:46:18.9110|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-22 21:46:19.0316|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-22 21:46:19.0316|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-22 21:47:02.3073|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 21:47:02.7633|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 21:54:41.7588|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-22 21:54:41.8099|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-22 21:54:41.8162|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-22 21:55:14.0573|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 21:55:14.3082|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 21:56:20.2566|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 21:58:02.4139|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 21:58:33.7525|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-22 21:58:51.6040|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-22 21:59:29.3729|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 22:00:39.5865|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 22:05:45.5517|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 22:16:01.8968|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 22:16:07.3037|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 22:16:07.2662|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is trying to Login
+2021-12-22 22:16:12.8822|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 22:16:12.8822|INFO|FundooNotes.Controllers.UserController|vaibhavchvn86@gmail.com is not Logged in
+2021-12-22 22:17:20.2529|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-22 22:17:21.3333|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-22 22:38:14.4955|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-22 22:38:18.2455|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-22 23:06:33.3362|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-22 23:06:33.3648|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-22 23:06:33.3648|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-22 23:29:14.9803|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-22 23:29:15.8625|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-23 00:09:28.1994|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-23 00:09:28.2430|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-23 00:12:51.1779|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-23 00:12:51.2309|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-23 00:14:26.1628|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-23 00:14:26.2019|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-23 00:15:25.0147|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-23 00:15:25.0527|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-23 00:16:27.9934|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-23 00:16:28.0238|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-23 08:32:54.5469|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-23 08:32:54.6470|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-23 08:32:54.6573|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-23 08:40:15.7768|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-23 08:40:17.1760|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-28 09:10:52.9454|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-28 09:10:52.9884|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-28 09:10:52.9884|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-28 13:46:55.3086|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-28 13:46:55.3086|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-28 13:46:55.5381|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-28 13:46:57.2701|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-28 13:46:57.2701|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-28 13:46:57.2701|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-28 15:10:19.1905|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-28 15:10:19.2587|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-30 16:33:51.5205|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-30 16:33:51.6008|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-30 16:33:51.6231|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-30 17:10:10.9819|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-30 17:10:11.4259|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-30 17:31:44.3038|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-30 17:31:44.3434|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-30 17:31:44.3434|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-30 17:32:13.3400|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-30 17:32:14.1271|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-30 21:45:39.7264|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-30 21:45:39.8032|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-30 21:45:39.8104|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-30 21:46:05.3243|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-30 21:46:06.1354|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-31 08:19:51.0514|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2021-12-31 08:19:51.1158|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2021-12-31 08:19:51.1207|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes
+2021-12-31 08:20:29.0296|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-31 08:20:30.0177|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2021-12-31 08:21:08.3075|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
+2021-12-31 08:21:08.4091|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully

@@ -49,14 +49,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.AddEmail(collaborator);
-                if (message.Equals("Collaborator Added Successfully"))
+                var response = await this.manager.AddEmail(collaborator);
+                if (response != null)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<CollaboratorModel>{ Status = true, Message = "Collaborator Added Successfully", Data = response });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Collaborator not Added" });
                 }
             }
             catch (Exception ex)
@@ -76,14 +76,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.DeleteEmail(Id);
-                if (message.Equals("Collaborator Deleted Successfully"))
+                var response = await this.manager.DeleteEmail(Id);
+                if (response == true)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new { Status = true, Message = "Collaborator Deleted Successfully" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Collaborator not Deleted" });
                 }
             }
             catch (Exception ex)
@@ -99,11 +99,11 @@ namespace FundooNotes.Controllers
         /// <returns>Response from this API</returns>
         [HttpGet]
         [Route("getcollaborator")]
-        public IActionResult GetCollaborators()
+        public IActionResult GetCollaborators(string noteId)
         {
             try
             {
-                IEnumerable<CollaboratorModel> collaborator = this.manager.GetCollaborators();
+                IEnumerable<CollaboratorModel> collaborator = this.manager.GetCollaborators(noteId);
                 if (collaborator != null)
                 {
                     return this.Ok(new { Status = true, Message = "Collaborators Retrieved Successfully", Data = collaborator });

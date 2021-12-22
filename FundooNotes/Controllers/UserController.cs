@@ -55,16 +55,16 @@ namespace FundooNotes.Controllers
             try
             {
                 this.logger.LogInformation(user.firstName + " is trying to Register");
-                string message = await this.manager.Register(user);
-                if (message.Equals("Register Successful"))
+                var response = await this.manager.Register(user);
+                if (response != null)
                 {
                     this.logger.LogInformation(user.firstName + " has Registered Successfully");
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<RegisterModel> { Status = true, Message = "Register Successful", Data = response });
                 }
                 else
                 {
                     this.logger.LogInformation(user.firstName + " is not Registered");
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Register Unsuccessful" });
                 }
             }
             catch (Exception ex)
@@ -87,8 +87,8 @@ namespace FundooNotes.Controllers
             try
             {
                 this.logger.LogInformation(login.email + " is trying to Login");
-                string message = await this.manager.Login(login);
-                if (message.Equals("Login Successful"))
+                var response = await this.manager.Login(login);
+                if (response != null)
                 {
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                     IDatabase database = connectionMultiplexer.GetDatabase();
@@ -106,12 +106,12 @@ namespace FundooNotes.Controllers
                     };
                     string token = this.manager.GenerateToken(login.email);
                     this.logger.LogInformation(login.email + " has Login Successfully");
-                    return this.Ok(new { Status = true, Message = message, Data = data, Token = token });
+                    return this.Ok(new { Status = true, Message = "Login Successfully", Data = data, Token = token });
                 }
                 else
                 {
                     this.logger.LogInformation(login.email + " is not Logged in");
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Login Unsuccessfully" });
                 }
             }
             catch (Exception ex)
@@ -133,22 +133,22 @@ namespace FundooNotes.Controllers
             try
             {
                 this.logger.LogInformation(email + " is trying to send reset link");
-                string message = await this.manager.ForgetPassword(email);
-                if (message.Equals("Reset Link send to Your Email"))
+                var response = await this.manager.ForgetPassword(email);
+                if (response != false)
                 {
                     this.logger.LogInformation(email + " has sent Link successfully");
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new { Status = true, Message = "Link Send succesfully" });
                 }
                 else
                 {
                     this.logger.LogInformation(email + " cannot sent Link");
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Link not Send " });
                 }
             }
             catch (Exception ex)
             {
                 this.logger.LogInformation(email + " has an Exception in Logged");
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
 
@@ -164,22 +164,22 @@ namespace FundooNotes.Controllers
             try
             {
                 this.logger.LogInformation(newpassword.Email + "is trying to Reset Password");
-                string message = await this.manager.ResetPassword(newpassword);
-                if (message.Equals("Reset Password Successful"))
+                var response = await this.manager.ResetPassword(newpassword);
+                if (response != null)
                 {
                     this.logger.LogInformation(newpassword.Email + " has Reset Password Successfully");
-                    return this.Ok(new { Status = true, Message = message });
-                }
+                    return this.Ok(new ResponseModel<RegisterModel> { Status = true, Message = "Reset Password Successfully", Data = response });
+                    }
                 else
                 {
                     this.logger.LogInformation(newpassword.Email + " cannot not be Reset Password");
-                    return this.BadRequest(new { Status = false, Message = message });
-                }
+                    return this.BadRequest(new { Status = false, Message = "Reset Password unsuccessfully" });
+                    }
             }
             catch (Exception ex)
             {
                 this.logger.LogInformation(newpassword.Email + " has an Exception in Reset Password");
-                return this.NotFound(new { Status = false, ex.Message });
+                return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
     }

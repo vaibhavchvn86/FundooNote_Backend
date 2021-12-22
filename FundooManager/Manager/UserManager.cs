@@ -39,7 +39,7 @@ namespace FundooManager.Manager
         /// <param name="user">The user.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Register(RegisterModel user)
+        public async Task<RegisterModel> Register(RegisterModel user)
         {
             user.password = EncodePasswordToBase64(user.password);
             try
@@ -59,7 +59,7 @@ namespace FundooManager.Manager
         /// <param name="password">The password.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Login(LoginModel login)
+        public async Task<RegisterModel> Login(LoginModel login)
         {
             login.password = EncodePasswordToBase64(login.password);
             try
@@ -78,7 +78,7 @@ namespace FundooManager.Manager
         /// <param name="Email">The email.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> ForgetPassword(string Email)
+        public async Task<bool> ForgetPassword(string Email)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace FundooManager.Manager
         /// <param name="newpassword">The newpassword.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> ResetPassword(ResetModel newpassword)
+        public async Task<RegisterModel> ResetPassword(ResetModel newpassword)
         {
             newpassword.Password = EncodePasswordToBase64(newpassword.Password);
             try

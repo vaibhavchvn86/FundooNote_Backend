@@ -48,12 +48,12 @@ namespace FundooRepository.Repository
         /// <param name="label">The label.</param>
         /// <returns>Label Created Successfully</returns>
         /// <exception cref="System.Exception">System Exception message</exception>
-        public async Task<string> CreateLabel(LabelModel label)
+        public async Task<LabelModel> CreateLabel(LabelModel label)
         {
             try
             {
                 await this.Label.InsertOneAsync(label);
-                return "Label Created Successfully";
+                return label;
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace FundooRepository.Repository
         /// <param name="label">The label.</param>
         /// <returns>Label Edited Successfully</returns>
         /// <exception cref="System.Exception">System Exception message</exception>
-        public async Task<string> EditLabel(string labelID, string label)
+        public async Task<LabelModel> EditLabel(string labelID, string label)
         {
             try
             {
@@ -77,10 +77,10 @@ namespace FundooRepository.Repository
                 {
                     await this.Label.UpdateOneAsync(x => x.LabelID == labelID,
                           Builders<LabelModel>.Update.Set(x => x.Label, label));
-                    return "Label Edited Successfully";
+                    return labelExist;
                 }
 
-                return "Note not Found";
+                return null;
             }
             catch (Exception ex)
             {
@@ -94,7 +94,7 @@ namespace FundooRepository.Repository
         /// <param name="label">The label.</param>
         /// <returns>Label Added Successfully</returns>
         /// <exception cref="System.Exception">System Exception message</exception>
-        public async Task<string> AddLabel(LabelModel label)
+        public async Task<LabelModel> AddLabel(LabelModel label)
         {
             try
             {
@@ -104,13 +104,13 @@ namespace FundooRepository.Repository
                     await this.Label.InsertOneAsync(label);
                     await this.Label.UpdateOneAsync(x => x.LabelID == label.LabelID,
                         Builders<LabelModel>.Update.Set(x => x.Label, label.Label));
-                    return "Label Added Successfully";
+                    return labelExist;
                 }
                 else
                 {
                     await this.Label.UpdateOneAsync(x => x.LabelID == label.LabelID,
                         Builders<LabelModel>.Update.Set(x => x.Label, label.Label));
-                    return "Label Added Successfully";
+                    return null;
                 }
             }
             catch (Exception ex)
@@ -125,7 +125,7 @@ namespace FundooRepository.Repository
         /// <param name="labelID">The label identifier.</param>
         /// <returns>Label Deleted Successfully</returns>
         /// <exception cref="System.Exception">System Exception message</exception>
-        public async Task<string> DeleteLabel(string labelID)
+        public async Task<bool> DeleteLabel(string labelID)
         {
             try
             {
@@ -133,10 +133,10 @@ namespace FundooRepository.Repository
                 if (labelExist != null)
                 {
                     await Label.DeleteOneAsync(x => x.LabelID == labelID);
-                    return "Label Deleted Successfully";
+                    return true;
                 }
 
-                return "Note not Found";
+                return false;
             }
             catch (Exception ex)
             {
@@ -150,7 +150,7 @@ namespace FundooRepository.Repository
         /// <param name="labelID">The label identifier.</param>
         /// <returns>Label Removed Successfully</returns>
         /// <exception cref="System.Exception">System Exception message</exception>
-        public async Task<string> RemoveLabel(string labelID)
+        public async Task<LabelModel> RemoveLabel(string labelID)
         {
             try
             {
@@ -159,10 +159,10 @@ namespace FundooRepository.Repository
                 {
                     await Label.UpdateOneAsync(x => x.LabelID == labelID,
                           Builders<LabelModel>.Update.Set(x => x.LabelID, labelID));
-                    return "Label Removed Successfully";
+                    return labelExist;
                 }
 
-                return "Label not Found";
+                return null;
             }
             catch (Exception ex)
             {
@@ -175,11 +175,11 @@ namespace FundooRepository.Repository
         /// </summary>
         /// <returns>All labels</returns>
         /// <exception cref="System.Exception">System Exception message</exception>
-        public IEnumerable<LabelModel> GetLabel()
+        public IEnumerable<LabelModel> GetLabel(string userId)
         {
             try
             {
-                IEnumerable<LabelModel> label = this.Label.AsQueryable().ToList();
+                IEnumerable<LabelModel> label = this.Label.AsQueryable().Where(x => x.UserID == userId).ToList();
                 //// var label = (from p in Note.AsQueryable()
                 ////              join o in Label.AsQueryable()
                 ////              on p.NoteID equals o.NoteID into joinlabel

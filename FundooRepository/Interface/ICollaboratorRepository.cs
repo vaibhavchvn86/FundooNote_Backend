@@ -13,10 +13,10 @@ namespace FundooRepository.Interface
 
     public interface ICollaboratorRepository
     {
-        Task<string> AddEmail(CollaboratorModel collaborator);
+        Task<CollaboratorModel> AddEmail(CollaboratorModel collaborator);
 
-        Task<string> DeleteEmail(string Id);
+        Task<bool> DeleteEmail(string Id);
 
-        IEnumerable<CollaboratorModel> GetCollaborators();
+        IEnumerable<CollaboratorModel> GetCollaborators(string noteId);
     }
 }

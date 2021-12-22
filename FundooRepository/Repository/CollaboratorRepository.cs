@@ -44,7 +44,7 @@ namespace FundooRepository.Repository
         /// <param name="email">The email.</param>
         /// <returns>Collaborator Added Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddEmail(CollaboratorModel collaborator)
+        public async Task<CollaboratorModel> AddEmail(CollaboratorModel collaborator)
         {
             try
             {
@@ -55,13 +55,13 @@ namespace FundooRepository.Repository
                     if (emailExist == null)
                     {
                         await Collaborator.InsertOneAsync(collaborator);
-                        return "Collaborator Added Successfully";
+                        return noteExist;
                     }
 
-                    return "Collaborator Already Exist";
+                    return null;
                 }
 
-                return "Note not Found";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -75,7 +75,7 @@ namespace FundooRepository.Repository
         /// <param name="email">The email.</param>
         /// <returns>Collaborator Deleted Successfully</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> DeleteEmail(string Id)
+        public async Task<bool> DeleteEmail(string Id)
         {
             try
             {
@@ -83,10 +83,10 @@ namespace FundooRepository.Repository
                 if (noteExist != null)
                 {
                     await Collaborator.DeleteOneAsync(x => x.CollaboratorId == Id);
-                    return "Collaborator Deleted Successfully";
+                    return true;
                 }
 
-                return "Collaborator not Found";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -100,11 +100,11 @@ namespace FundooRepository.Repository
         /// <param name="noteId">The note identifier.</param>
         /// <returns>All collaborators</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<CollaboratorModel> GetCollaborators()
+        public IEnumerable<CollaboratorModel> GetCollaborators(string noteId)
         {
             try
             {
-                IEnumerable<CollaboratorModel> collaborator = this.Collaborator.AsQueryable().ToList();
+                IEnumerable<CollaboratorModel> collaborator = this.Collaborator.AsQueryable().Where(x => x.NoteId == noteId).ToList();
                 if (collaborator != null)
                 {
                     return collaborator;

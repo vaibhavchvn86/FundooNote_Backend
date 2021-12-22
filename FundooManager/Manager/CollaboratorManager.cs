@@ -40,7 +40,7 @@ namespace FundooManager.Manager
         /// <param name="email">The email.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddEmail(CollaboratorModel collaborator)
+        public async Task<CollaboratorModel> AddEmail(CollaboratorModel collaborator)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace FundooManager.Manager
         /// <param name="email">The email.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> DeleteEmail(string Id)
+        public async Task<bool> DeleteEmail(string Id)
         {
             try
             {
@@ -76,11 +76,11 @@ namespace FundooManager.Manager
         /// <param name="noteId">The note identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<CollaboratorModel> GetCollaborators()
+        public IEnumerable<CollaboratorModel> GetCollaborators(string noteId)
         {
             try
             {
-                return this.collaboratorRepository.GetCollaborators();
+                return this.collaboratorRepository.GetCollaborators(noteId);
             }
             catch (Exception ex)
             {

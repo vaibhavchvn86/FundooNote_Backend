@@ -57,7 +57,7 @@ namespace FundooRepository.Repository
         /// <param name="user">The user.</param>
         /// <returns>Register Successful</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Register(RegisterModel user)
+        public async Task<RegisterModel> Register(RegisterModel user)
         {
             try
             {
@@ -65,10 +65,10 @@ namespace FundooRepository.Repository
                 if (ifExist == null)
                 {
                     await this.User.InsertOneAsync(user);
-                    return "Register Successful";
+                    return ifExist;
                 }
 
-                return "Email Already Exist";
+                return null;
             }
             catch (ArgumentNullException ex)
             {
@@ -83,30 +83,31 @@ namespace FundooRepository.Repository
         /// <param name="password">The password.</param>
         /// <returns>Login Successful</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Login(LoginModel login)
+        public async Task<RegisterModel> Login(LoginModel login)
         {
             try
             {
+                
                 var emailExist = await this.User.AsQueryable().Where(x => (x.email == login.email)).FirstOrDefaultAsync();
                 if (emailExist != null)
                 {
-                    var passwordExist = await this.User.AsQueryable().Where(x => x.password == login.password).FirstOrDefaultAsync();
-                    if (passwordExist != null)
+                    emailExist = await this.User.AsQueryable().Where(x => x.password == login.password).FirstOrDefaultAsync();
+                    if (emailExist != null)
                     {
                         ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                         IDatabase database = connectionMultiplexer.GetDatabase();
-                        database.StringSet(key: "First Name", passwordExist.firstName);
-                        database.StringSet(key: "Last Name", passwordExist.lastName);
-                        database.StringSet(key: "Email", passwordExist.email);
-                        database.StringSet(key: "UserId", passwordExist.UserID);
+                        database.StringSet(key: "First Name", emailExist.firstName);
+                        database.StringSet(key: "Last Name", emailExist.lastName);
+                        database.StringSet(key: "Email", emailExist.email);
+                        database.StringSet(key: "UserId", emailExist.UserID);
                                    
-                        return "Login Successful";
+                        return emailExist;
                     }
 
-                    return "Enter valid Password";
+                    return null;
                 }
 
-                return "Enter valid Email";
+                return null;
             }
             catch (Exception ex)
             {
@@ -120,7 +121,7 @@ namespace FundooRepository.Repository
         /// <param name="email">The email.</param>
         /// <returns>Reset Link send to Your Email</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> ForgetPassword(string email)
+        public async Task<bool> ForgetPassword(string email)
         {
             try
             {
@@ -142,10 +143,10 @@ namespace FundooRepository.Repository
                     SmtpServer.EnableSsl = true;
                     SmtpServer.Send(mail);
 
-                    return "Reset Link send to Your Email";
+                    return true;
                 }
 
-                return "Email does not exist";
+                return false;
             }
             catch (ArgumentNullException ex)
             {
@@ -192,7 +193,7 @@ namespace FundooRepository.Repository
         /// <param name="newpassword">The newpassword.</param>
         /// <returns>Reset Password Successful</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> ResetPassword(ResetModel password)
+        public async Task<RegisterModel> ResetPassword(ResetModel password)
         {
             try
             {
@@ -201,10 +202,10 @@ namespace FundooRepository.Repository
                 {
                         await User.UpdateOneAsync(x => x.email == password.Email,
                             Builders<RegisterModel>.Update.Set(x => x.password, password.Password));
-                        return "Reset Password Successful";
+                        return emailExist;
                 }
 
-                return "Enter valid Email";
+                return null;
             }
             catch (Exception ex)
             {
