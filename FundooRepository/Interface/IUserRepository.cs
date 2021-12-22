@@ -12,13 +12,13 @@ namespace FundooRepository.Interface
 
     public interface IUserRepository
     {
-        Task<string> Register(RegisterModel user);
+        Task<RegisterModel> Register(RegisterModel user);
 
-        Task<string> Login(LoginModel login);
+        Task<RegisterModel> Login(LoginModel login);
 
-        Task<string> ForgetPassword(string email);
+        Task<bool> ForgetPassword(string email);
 
-        Task<string> ResetPassword(ResetModel password);
+        Task<RegisterModel> ResetPassword(ResetModel password);
 
         string GenerateToken(string email);
     }

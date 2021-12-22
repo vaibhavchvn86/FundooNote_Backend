@@ -40,7 +40,7 @@ namespace FundooManager.Manager
         /// <param name="label">The label.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> CreateLabel(LabelModel label)
+        public async Task<LabelModel> CreateLabel(LabelModel label)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace FundooManager.Manager
         /// <param name="label">The label.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> EditLabel(string labelID, string label)
+        public async Task<LabelModel> EditLabel(string labelID, string label)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace FundooManager.Manager
         /// <param name="label">The label.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddLabel(LabelModel label)
+        public async Task<LabelModel> AddLabel(LabelModel label)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace FundooManager.Manager
         /// <param name="labelID">The label identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> DeleteLabel(string labelID)
+        public async Task<bool> DeleteLabel(string labelID)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace FundooManager.Manager
         /// <param name="labelID">The label identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> RemoveLabel(string labelID)
+        public async Task<LabelModel> RemoveLabel(string labelID)
         {
             try
             {
@@ -130,11 +130,11 @@ namespace FundooManager.Manager
         /// </summary>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<LabelModel> GetLabel()
+        public IEnumerable<LabelModel> GetLabel(string userId)
         {
             try
             {
-                return this.LabelRepository.GetLabel();
+                return this.LabelRepository.GetLabel(userId);
             }
             catch (Exception ex)
             {

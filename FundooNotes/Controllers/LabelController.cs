@@ -47,14 +47,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.CreateLabel(label);
-                if (message.Equals("Label Created Successfully"))
+                var response = await this.manager.CreateLabel(label);
+                if (response != null)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<LabelModel> { Status = true, Message = "Label Created Successfully", Data = response });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Label not Created " });
                 }
             }
             catch (Exception ex)
@@ -75,14 +75,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.EditLabel(labelID, label);
-                if (message.Equals("Label Edited Successfully"))
+                var response = await this.manager.EditLabel(labelID, label);
+                if (response != null)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<LabelModel> { Status = true, Message = "Label Edited Successfully", Data = response });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Label not Edited" });
                 }
             }
             catch (Exception ex)
@@ -102,14 +102,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.AddLabel(label);
-                if (message.Equals("Label Added Successfully"))
+                var response = await this.manager.AddLabel(label);
+                if (response != null)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<LabelModel> { Status = true, Message = "Label Added Successfully", Data = response });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Label not Added" });
                 }
             }
             catch (Exception ex)
@@ -129,14 +129,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.RemoveLabel(label);
-                if (message.Equals("Label Removed Successfully"))
+                var response = await this.manager.RemoveLabel(label);
+                if (response != null)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new ResponseModel<LabelModel> { Status = true, Message = "Label Removed Successfully", Data = response });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Label not Removed" });
                 }
             }
             catch (Exception ex)
@@ -156,14 +156,14 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                string message = await this.manager.DeleteLabel(label);
-                if (message.Equals("Label Deleted Successfully"))
+                var response = await this.manager.DeleteLabel(label);
+                if (response != false)
                 {
-                    return this.Ok(new { Status = true, Message = message });
+                    return this.Ok(new { Status = true, Message = "Label Deleted Successfully" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Status = false, Message = message });
+                    return this.BadRequest(new { Status = false, Message = "Label not Deleted" });
                 }
             }
             catch (Exception ex)
@@ -178,11 +178,11 @@ namespace FundooNotes.Controllers
         /// <returns>Response from this API</returns>
         [HttpGet]
         [Route("getlabel")]
-        public IActionResult GetLabel()
+        public IActionResult GetLabel(string userId)
         {
             try
             {
-                IEnumerable<LabelModel> label = this.manager.GetLabel();
+                IEnumerable<LabelModel> label = this.manager.GetLabel(userId);
                 if (label != null)
                 {
                     return this.Ok(new { Status = true, Message = "Note Labels Retrieved SuccessFully", Data = label });

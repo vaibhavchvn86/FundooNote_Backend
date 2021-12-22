@@ -14,17 +14,17 @@ namespace FundooManager.Interface
 
     public interface ILabelManager
     {
-        Task<string> CreateLabel(LabelModel label);
+        Task<LabelModel> CreateLabel(LabelModel label);
 
-        Task<string> EditLabel(string labelID, string label);
+        Task<LabelModel> EditLabel(string labelID, string label);
 
-        Task<string> AddLabel(LabelModel label);
+        Task<LabelModel> AddLabel(LabelModel label);
 
-        Task<string> RemoveLabel(string labelID);
+        Task<LabelModel> RemoveLabel(string labelID);
 
-        Task<string> DeleteLabel(string labelID);
+        Task<bool> DeleteLabel(string labelID);
 
-        IEnumerable<LabelModel> GetLabel();
+        IEnumerable<LabelModel> GetLabel(string userId);
 
         IEnumerable<LabelModel> GetLabelByNoteId(string noteId);
 

@@ -41,7 +41,7 @@ namespace FundooManager.Manager
         /// <param name="note">The note.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddNote(NoteModel note)
+        public async Task<NoteModel> AddNote(NoteModel note)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace FundooManager.Manager
         /// <param name="note">The note.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> EditNote(NoteModel note)
+        public async Task<NoteModel> EditNote(NoteModel note)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace FundooManager.Manager
         /// <param name="reminder">The reminder.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> AddReminder(string noteID, string reminder)
+        public async Task<NoteModel> AddReminder(string noteID, string reminder)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace FundooManager.Manager
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> RemoveReminder(string noteID)
+        public async Task<NoteModel> RemoveReminder(string noteID)
         {
             try
             {
@@ -151,11 +151,11 @@ namespace FundooManager.Manager
         /// <param name="color">The color.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> EditColor(string noteID, string color)
+        public async Task<NoteModel> EditColor(NoteModel color)
         {
             try
             {
-                return await this.NoteRepository.EditColor(noteID, color);
+                return await this.NoteRepository.EditColor(color);
             }
             catch (Exception ex)
             {
@@ -170,7 +170,7 @@ namespace FundooManager.Manager
         /// <param name="image">The image.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> ImageUpload(string noteID, IFormFile image)
+        public async Task<NoteModel> ImageUpload(string noteID, IFormFile image)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace FundooManager.Manager
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Trash(string noteID)
+        public async Task<NoteModel> Trash(string noteID)
         {
             try
             {
@@ -206,7 +206,7 @@ namespace FundooManager.Manager
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Restore(string noteID)
+        public async Task<NoteModel> Restore(string noteID)
         {
             try
             {
@@ -224,7 +224,7 @@ namespace FundooManager.Manager
         /// <param name="noteID">The note identifier.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> DeleteForever(string noteID)
+        public async Task<bool> DeleteForever(string noteID)
         {
             try
             {
@@ -241,11 +241,11 @@ namespace FundooManager.Manager
         /// </summary>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetNotes()
+        public IEnumerable<NoteModel> GetNotes(string userId)
         {
             try
             {
-                return this.NoteRepository.GetNotes();
+                return this.NoteRepository.GetNotes(userId);
             }
             catch (Exception ex)
             {
@@ -258,11 +258,11 @@ namespace FundooManager.Manager
         /// </summary>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetArchive()
+        public IEnumerable<NoteModel> GetArchive(string userId)
         {
             try
             {
-                return this.NoteRepository.GetArchive();
+                return this.NoteRepository.GetArchive(userId);
             }
             catch (Exception ex)
             {
@@ -275,11 +275,11 @@ namespace FundooManager.Manager
         /// </summary>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetTrash()
+        public IEnumerable<NoteModel> GetTrash(string userId)
         {
             try
             {
-                return this.NoteRepository.GetTrash();
+                return this.NoteRepository.GetTrash(userId);
             }
             catch (Exception ex)
             {
@@ -292,11 +292,11 @@ namespace FundooManager.Manager
         /// </summary>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public IEnumerable<NoteModel> GetReminder()
+        public IEnumerable<NoteModel> GetReminder(string userId)
         {
             try
             {
-                return this.NoteRepository.GetReminder();
+                return this.NoteRepository.GetReminder(userId);
             }
             catch (Exception ex)
             {
