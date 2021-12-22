@@ -54,22 +54,22 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                this.logger.LogInformation(user.FirstName + " is trying to Register");
+                this.logger.LogInformation(user.firstName + " is trying to Register");
                 string message = await this.manager.Register(user);
                 if (message.Equals("Register Successful"))
                 {
-                    this.logger.LogInformation(user.FirstName + " has Registered Successfully");
+                    this.logger.LogInformation(user.firstName + " has Registered Successfully");
                     return this.Ok(new { Status = true, Message = message });
                 }
                 else
                 {
-                    this.logger.LogInformation(user.FirstName + " is not Registered");
+                    this.logger.LogInformation(user.firstName + " is not Registered");
                     return this.BadRequest(new { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogInformation(user.FirstName + " has an Exception in Register");
+                this.logger.LogInformation(user.firstName + " has an Exception in Register");
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }
@@ -82,41 +82,41 @@ namespace FundooNotes.Controllers
         /// <returns>Response from this API</returns>
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(string myEmail, string password)
+        public async Task<IActionResult> Login(LoginModel login)
         {
             try
             {
-                this.logger.LogInformation(myEmail + " is trying to Login");
-                string message = await this.manager.Login(myEmail, password);
+                this.logger.LogInformation(login.email + " is trying to Login");
+                string message = await this.manager.Login(login);
                 if (message.Equals("Login Successful"))
                 {
                     ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                     IDatabase database = connectionMultiplexer.GetDatabase();
                     string firstName = database.StringGet("First Name");
                     string lastName = database.StringGet("Last Name");
-                    string email = database.StringGet("Email");
+                    string eemail = database.StringGet("Email");
                     string userId = database.StringGet("UserId");
 
                     RegisterModel data = new RegisterModel
                     {
-                        FirstName = firstName,
-                        LastName = lastName,
+                        firstName = firstName,
+                        lastName = lastName,
                         UserID = userId,
-                        Email = email
+                        email = login.email
                     };
-                    string token = this.manager.GenerateToken(myEmail);
-                    this.logger.LogInformation(myEmail + " has Login Successfully");
+                    string token = this.manager.GenerateToken(login.email);
+                    this.logger.LogInformation(login.email + " has Login Successfully");
                     return this.Ok(new { Status = true, Message = message, Data = data, Token = token });
                 }
                 else
                 {
-                    this.logger.LogInformation(myEmail + " is not Logged in");
+                    this.logger.LogInformation(login.email + " is not Logged in");
                     return this.BadRequest(new { Status = false, Message = message });
                 }
             }
             catch (Exception ex)
             {
-                this.logger.LogInformation(myEmail + " has an Exception in Logged");
+                this.logger.LogInformation(login.email + " has an Exception in Logged");
                 return this.NotFound(new { Status = false, Message = ex.Message });
             }
         }

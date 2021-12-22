@@ -14,7 +14,7 @@ namespace FundooRepository.Interface
     {
         Task<string> Register(RegisterModel user);
 
-        Task<string> Login(string email, string password);
+        Task<string> Login(LoginModel login);
 
         Task<string> ForgetPassword(string email);
 

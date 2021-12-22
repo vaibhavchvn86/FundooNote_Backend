@@ -41,7 +41,7 @@ namespace FundooManager.Manager
         /// <exception cref="System.Exception">System Exception Message</exception>
         public async Task<string> Register(RegisterModel user)
         {
-            user.Password = EncodePasswordToBase64(user.Password);
+            user.password = EncodePasswordToBase64(user.password);
             try
             {
                 return await this.repository.Register(user);
@@ -59,12 +59,12 @@ namespace FundooManager.Manager
         /// <param name="password">The password.</param>
         /// <returns>Response from this API</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Login(string email, string password)
+        public async Task<string> Login(LoginModel login)
         {
-            password = EncodePasswordToBase64(password);
+            login.password = EncodePasswordToBase64(login.password);
             try
             {
-                return await this.repository.Login(email, password);
+                return await this.repository.Login(login);
             }
             catch(Exception ex)
             {

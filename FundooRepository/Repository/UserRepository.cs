@@ -61,7 +61,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var ifExist = await this.User.AsQueryable().SingleOrDefaultAsync(e => e.Email == user.Email);
+                var ifExist = await this.User.AsQueryable().SingleOrDefaultAsync(e => e.email == user.email);
                 if (ifExist == null)
                 {
                     await this.User.InsertOneAsync(user);
@@ -83,21 +83,21 @@ namespace FundooRepository.Repository
         /// <param name="password">The password.</param>
         /// <returns>Login Successful</returns>
         /// <exception cref="System.Exception">System Exception Message</exception>
-        public async Task<string> Login(string email, string password)
+        public async Task<string> Login(LoginModel login)
         {
             try
             {
-                var emailExist = await this.User.AsQueryable().Where(x => (x.Email == email)).FirstOrDefaultAsync();
+                var emailExist = await this.User.AsQueryable().Where(x => (x.email == login.email)).FirstOrDefaultAsync();
                 if (emailExist != null)
                 {
-                    var passwordExist = await this.User.AsQueryable().Where(x => x.Password == password).FirstOrDefaultAsync();
+                    var passwordExist = await this.User.AsQueryable().Where(x => x.password == login.password).FirstOrDefaultAsync();
                     if (passwordExist != null)
                     {
                         ConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect("127.0.0.1:6379");
                         IDatabase database = connectionMultiplexer.GetDatabase();
-                        database.StringSet(key: "First Name", passwordExist.FirstName);
-                        database.StringSet(key: "Last Name", passwordExist.LastName);
-                        database.StringSet(key: "Email", passwordExist.Email);
+                        database.StringSet(key: "First Name", passwordExist.firstName);
+                        database.StringSet(key: "Last Name", passwordExist.lastName);
+                        database.StringSet(key: "Email", passwordExist.email);
                         database.StringSet(key: "UserId", passwordExist.UserID);
                                    
                         return "Login Successful";
@@ -124,7 +124,7 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var emailExist = await this.User.AsQueryable().Where(x => x.Email == email).FirstOrDefaultAsync();
+                var emailExist = await this.User.AsQueryable().Where(x => x.email == email).FirstOrDefaultAsync();
                 if (emailExist != null)
                 {
                     MailMessage mail = new MailMessage();
@@ -196,11 +196,11 @@ namespace FundooRepository.Repository
         {
             try
             {
-                var emailExist = await this.User.AsQueryable().Where(x => x.Email == password.Email).FirstOrDefaultAsync();
+                var emailExist = await this.User.AsQueryable().Where(x => x.email == password.Email).FirstOrDefaultAsync();
                 if (emailExist != null)
                 {
-                        await User.UpdateOneAsync(x => x.Email == password.Email,
-                            Builders<RegisterModel>.Update.Set(x => x.Password, password.Password));
+                        await User.UpdateOneAsync(x => x.email == password.Email,
+                            Builders<RegisterModel>.Update.Set(x => x.password, password.Password));
                         return "Reset Password Successful";
                 }
 

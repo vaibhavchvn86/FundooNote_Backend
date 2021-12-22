@@ -303,6 +303,8 @@ namespace FundooRepository.Repository
                     if (noteExist.Trash.Equals(false))
                     {
                         await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
+                           Builders<NoteModel>.Update.Set(x => x.Pinned, false));
+                        await this.Note.UpdateOneAsync(x => x.NoteID == noteID,
                             Builders<NoteModel>.Update.Set(x => x.Trash, true));
                         return "Note Trashed";
                     }
