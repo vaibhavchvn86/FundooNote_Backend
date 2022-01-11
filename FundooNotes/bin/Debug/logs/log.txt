@@ -319,3 +319,6 @@
 2022-01-09 18:59:42.5561|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has an Exception in Logged
 2022-01-09 18:59:46.0532|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com is trying to Login
 2022-01-09 18:59:46.9563|INFO|FundooNotes.Controllers.UserController|vaibhav@gmail.com has Login Successfully
+2022-01-17 23:54:45.7726|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down.
+2022-01-17 23:54:45.8451|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development
+2022-01-17 23:54:45.8601|INFO|Microsoft.Hosting.Lifetime|Content root path: D:\Visual Studio 2019\repos\FundooNotes\FundooNotes

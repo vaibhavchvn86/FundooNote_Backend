@@ -65,7 +65,7 @@ namespace FundooRepository.Repository
                 if (ifExist == null)
                 {
                     await this.User.InsertOneAsync(user);
-                    return ifExist;
+                    return user;
                 }
 
                 return null;
